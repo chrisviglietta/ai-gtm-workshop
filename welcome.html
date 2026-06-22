@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>try{if(localStorage.getItem('clay_ws_unlocked')!=='1'){location.replace('home.html');}}catch(e){}</script>
+<title>Your workshop page · Clay AI GTM Workshop</title>
+<link rel="stylesheet" href="assets/colors_and_type.css" />
+<link rel="icon" href="assets/logo/Clay_Logo_Icon.png" />
+<script src="data.js"></script>
+<script src="case-studies.js"></script>
+<script src="image-slot.js"></script>
+<script src="auth.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/fill/style.css" />
+<style>
+  :root{
+    --gutter: clamp(20px, 5vw, 64px);
+    --content-max: 1100px;
+    --head-h: 64px;
+    --tangerine: var(--tangerine-300);
+    --tangerine-ink: var(--tangerine-500);
+    --rule: rgba(27,26,24,.10);
+    --rule-strong: rgba(27,26,24,.16);
+    --success: #1B7B3A;
+    --success-bg: #E8F5EC;
+  }
+  *{ box-sizing: border-box; }
+  html{ background: var(--oat-100); }
+  body{
+    margin:0; color: var(--oat-500); font-family: var(--font-body); -webkit-font-smoothing: antialiased;
+    background:
+      linear-gradient(180deg, rgba(254,253,251,.20) 0%, rgba(254,253,251,.28) 100%),
+      url("assets/clay-landscape.png") center top / cover no-repeat;
+    background-attachment: fixed, fixed;
+  }
+  a{ color: inherit; }
+  img{ display:block; max-width: 100%; }
+  code{ font-family: var(--font-mono); font-size: .92em; background: var(--oat-200); padding: 1px 6px; border-radius: 4px; }
+  ::selection{ background: var(--tangerine-200); }
+
+  /* ── site header ─────────────────────────────────────────── */
+  .site-head{ position: sticky; top:0; z-index:60; background: #0E0D0B; border-bottom: 1px solid rgba(254,253,251,.10); }
+  .site-head__inner{ height: var(--head-h); padding: 0 var(--gutter); display:grid; grid-template-columns: auto 1fr auto; gap: 24px; align-items: center; }
+  .brand{ display:flex; align-items:center; gap:14px; min-width:0; text-decoration:none; }
+  .brand img{ height: 26px; }
+  .brand__sep{ width:1px; height:18px; background: rgba(254,253,251,.20); }
+  .brand__crumb{ font-family: var(--font-mono); font-size: 12px; font-weight:500; letter-spacing: .08em; text-transform: uppercase; color: var(--oat-300); white-space: nowrap; }
+  .topnav{ justify-self:center; display:flex; gap:4px; background: rgba(254,253,251,.08); border-radius:999px; padding:4px; }
+  @media (max-width: 860px){ .topnav{ display:none; } }
+  .topnav a{ display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; font-family:var(--font-mono); font-size:12px; font-weight:500; letter-spacing:.04em; color:var(--oat-300); text-decoration:none; transition: background-color .15s, color .15s; }
+  .topnav a:hover{ color: var(--oat-100); }
+  .topnav a span{ white-space: nowrap; }
+  .topnav a.is-active{ color:var(--oat-500); background:var(--oat-100); box-shadow:0 1px 2px rgba(27,26,24,.06); }
+  .topnav .n{ opacity:.6; font-size:10px; }
+
+  .btn{ display:inline-flex; align-items:center; gap: 8px; height: 40px; padding: 0 18px; border-radius: 999px; font-family: var(--font-body); font-weight: 500; font-size: 14px; cursor: pointer; border: 1px solid transparent; text-decoration: none; transition: background-color .12s, color .12s, border-color .12s; white-space: nowrap; }
+  .btn--ink{ background: var(--oat-500); color: var(--oat-100); }
+  .btn--ink:hover{ background: #000; }
+  .btn--ghost{ background: transparent; border-color: var(--rule-strong); color: var(--oat-500); }
+  .btn--ghost:hover{ background: var(--oat-200); }
+  .btn--tangerine{ background: var(--tangerine); color: var(--tangerine-ink); }
+  .btn--tangerine:hover{ background: var(--tangerine-400); color: var(--oat-100); }
+  .btn--lg{ height: 52px; padding: 0 26px; font-size: 16px; }
+
+  /* ── hero ────────────────────────────────────────────────── */
+  .hero{ padding: clamp(24px, 3.5vw, 40px) var(--gutter) clamp(10px, 1.6vw, 18px); }
+  .hero__inner{ max-width: var(--content-max); margin: 0 auto; background: var(--oat-100); border: 1px solid var(--rule); border-radius: 28px; padding: clamp(32px, 4.5vw, 56px); }
+  .eyebrow{ font-family: var(--font-mono); font-weight: 500; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400); }
+  .hero h1{
+    font-family: var(--font-display); font-weight: 575;
+    font-size: clamp(40px, 6vw, 84px); line-height: .98; letter-spacing: -.04em;
+    margin: 14px 0 0; text-wrap: balance; max-width: 16ch;
+    font-feature-settings: "ss01" on, "ss10" on, "ss11" on;
+  }
+  .hero h1 .rocket{ color: var(--tangerine); }
+  .hero__sub{ font-size: 18px; line-height: 1.55; margin-top: 22px; max-width: 58ch; color: var(--oat-400); }
+  .hero__note{ margin-top: 20px; font-size: 16px; line-height: 1.55; color: var(--oat-500); max-width: 56ch; }
+  .hero__note a{ color: var(--tangerine-ink); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+
+  /* ── beta / not-approved notice ──────────────────────────── */
+  .betabar{ background: var(--oat-500); color: var(--oat-100); position: sticky; top: var(--head-h); z-index: 55; }
+  .betabar__inner{ max-width: var(--content-max); margin: 0 auto; padding: 14px var(--gutter); display:flex; align-items:center; gap: 16px; }
+  .betabar__tag{ flex:0 0 auto; display:inline-flex; align-items:center; gap: 7px; background: var(--tangerine); color: var(--tangerine-ink); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }
+  .betabar__txt{ margin: 0; font-size: 14px; line-height: 1.5; color: var(--oat-200); }
+  .betabar__txt b{ color: var(--oat-100); font-weight: 500; }
+  .betabar__txt a{ color: var(--tangerine-300); text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 640px){ .betabar__inner{ align-items: flex-start; gap: 12px; } }
+
+  /* ── layout: sticky section nav + stacked blocks ─────────── */
+  .shell{ max-width: var(--content-max); margin: 0 auto; padding: clamp(8px,2vw,20px) var(--gutter) clamp(72px, 9vw, 120px); display: grid; grid-template-columns: 188px minmax(0,1fr); gap: clamp(28px, 4vw, 56px); align-items: start; }
+  @media (max-width: 900px){ .shell{ grid-template-columns: 1fr; gap: 0; } }
+
+  /* side nav */
+  .secnav{ position: sticky; top: calc(var(--head-h) + 74px); background: var(--oat-100); border: 1px solid var(--rule); border-radius: 18px; padding: 12px; box-shadow: 0 6px 22px rgba(27,26,24,.06); }
+  .secnav__cap{ font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--oat-400); padding: 2px 8px 10px; }
+  @media (max-width: 900px){
+    .secnav{ position: sticky; top: calc(var(--head-h) + 50px); margin: 0 calc(var(--gutter) * -1); padding: 10px var(--gutter); background: rgba(254,253,251,.94); backdrop-filter: blur(10px); border: 0; border-bottom: 1px solid var(--rule); border-radius: 0; box-shadow: none; z-index: 40; }
+    .secnav__cap{ display: none; }
+  }
+  .secnav__list{ display:flex; flex-direction: column; gap: 2px; }
+  @media (max-width: 900px){ .secnav__list{ flex-direction: row; gap: 6px; overflow-x: auto; scrollbar-width: none; } .secnav__list::-webkit-scrollbar{ display:none; } }
+  .secnav__item{ display:flex; align-items:center; gap: 10px; padding: 9px 12px; border-radius: 10px; border: 0; background: transparent; cursor: pointer; text-align: left; font: inherit; color: var(--oat-400); text-decoration: none; transition: background-color .15s, color .15s; white-space: nowrap; }
+  .secnav__item:hover{ background: var(--oat-200); color: var(--oat-500); }
+  .secnav__item.is-active{ background: var(--oat-500); color: var(--oat-100); }
+  .secnav__num{ font-family: var(--font-mono); font-size: 10px; opacity: .6; }
+  .secnav__lbl{ font-size: 13.5px; font-weight: 500; }
+  @media (max-width: 900px){ .secnav__num{ display:none; } .secnav__item{ padding: 8px 14px; border-radius: 999px; border: 1px solid var(--rule); } .secnav__item.is-active{ border-color: var(--oat-500); } }
+
+  /* ── collapsible block ───────────────────────────────────── */
+  .blocks{ display:flex; flex-direction: column; gap: clamp(16px, 2vw, 22px); min-width: 0; }
+  .block{ scroll-margin-top: calc(var(--head-h) + 24px); border: 1px solid var(--rule); border-radius: 24px; background: var(--oat-100); overflow: hidden; }
+  .block__bar{ display:grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 20px clamp(20px,2.4vw,28px); cursor: pointer; user-select: none; }
+  .block__bar:hover{ background: var(--oat-200); }
+  .block__idx{ font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--tangerine-400); width: 26px; }
+  .block__title{ display:flex; align-items:center; gap: 12px; min-width: 0; }
+  .block__title h2{ font-family: var(--font-display); font-weight: 500; font-size: clamp(20px, 2.4vw, 27px); line-height: 1.08; letter-spacing: -.02em; margin: 0; }
+  .block__hint{ font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; color: var(--oat-400); white-space: nowrap; }
+  @media (max-width: 560px){ .block__hint{ display:none; } }
+  .block__chev{ width: 34px; height: 34px; border-radius: 999px; background: var(--oat-200); display:grid; place-items:center; color: var(--oat-500); transition: transform .25s cubic-bezier(.2,0,0,1), background-color .15s; flex: 0 0 auto; }
+  .block__bar:hover .block__chev{ background: var(--oat-300); }
+  .block.is-collapsed .block__chev{ transform: rotate(-90deg); }
+  .block__body{ padding: 0 clamp(20px,2.4vw,28px) clamp(24px,2.8vw,32px); }
+  .block.is-collapsed .block__body{ display: none; }
+  .block__lead{ font-size: 15px; line-height: 1.6; color: var(--oat-400); margin: 0 0 22px; max-width: 62ch; }
+
+  /* ── 01 · Your info ──────────────────────────────────────── */
+  .know__rows{ display: flex; flex-direction: column; }
+  .know__row{ display: grid; grid-template-columns: 190px 1fr; gap: 24px; padding: 16px 0; border-top: 1px solid var(--rule); }
+  .know__row:first-child{ border-top: 0; padding-top: 0; }
+  @media (max-width: 560px){ .know__row{ grid-template-columns: 1fr; gap: 6px; } }
+  .know__k{ font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400); padding-top: 3px; }
+  .know__v{ font-size: 16px; line-height: 1.55; }
+  .know__edit{ font-family: var(--font-mono); font-size: 11px; color: var(--oat-400); margin-top: 18px; font-style: italic; }
+
+  /* ── 02 · Case studies (gallery on the landscape) ────────── */
+  .cs-gallery{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 880px){ .cs-gallery{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px){ .cs-gallery{ grid-template-columns: 1fr; } }
+  .cs{ display:flex; flex-direction:column; background: var(--oat-100); border: 1px solid var(--rule); border-radius: 20px; overflow:hidden; text-decoration:none; color:inherit; transition: transform .15s, box-shadow .15s, border-color .15s; }
+  .cs:hover{ transform: translateY(-3px); border-color: var(--rule-strong); box-shadow: 0 18px 40px rgba(27,26,24,.14); }
+  image-slot.cs__media{ display:block; width:100%; height: clamp(118px, 13vw, 152px); background: var(--cs-bg, var(--oat-200)); color: var(--cs-fg, var(--oat-500)); }
+  image-slot.cs__media::part(ring){ border-color: color-mix(in srgb, var(--cs-fg, #000) 22%, transparent); }
+  image-slot.cs__media::part(empty){ color: var(--cs-fg, var(--oat-500)); }
+  .cs__body{ padding: 20px; display:flex; flex-direction:column; gap: 10px; flex:1; }
+  .cs__eyebrow{ font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--cs-accent, var(--tangerine-400)); }
+  .cs__name{ font-family: var(--font-display); font-weight: 575; font-size: clamp(26px, 2.6vw, 34px); line-height: .98; letter-spacing: -.03em; margin: 0; font-feature-settings: "ss01" on, "ss10" on, "ss11" on; }
+  .cs__title{ font-size: 14px; line-height: 1.35; font-weight: 500; color: var(--oat-500); margin: 0; text-wrap: balance; }
+  .cs__desc{ font-size: 13px; line-height: 1.5; color: var(--oat-400); margin: 0; display:-webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow:hidden; }
+  .cs__metrics{ margin-top: auto; padding-top: 14px; border-top: 1px solid var(--rule); display:flex; flex-wrap: wrap; gap: 8px 20px; }
+  .cs__metric{ display:flex; flex-direction:column; gap: 3px; }
+  .cs__num{ font-family: var(--font-display); font-weight: 575; font-size: 22px; line-height: 1; letter-spacing: -.02em; color: var(--cs-accent, var(--tangerine-400)); }
+  .cs__mlabel{ font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .02em; color: var(--oat-400); line-height: 1.3; max-width: 16ch; }
+  .cs__cta{ margin-top: 14px; display:inline-flex; align-items:center; gap: 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--oat-500); }
+  .cs:hover .cs__cta{ color: var(--cs-accent, var(--tangerine-400)); }
+
+  /* brand color flavors → tile bg, caption fg, metric accent */
+  .cs--ube      { --cs-bg: var(--ube-200);       --cs-fg: var(--ube-500);       --cs-accent: var(--ube-400); }
+  .cs--lime     { --cs-bg: var(--lime-200);      --cs-fg: var(--lime-500);      --cs-accent: var(--lime-400); }
+  .cs--lemon    { --cs-bg: var(--lemon-200);     --cs-fg: var(--lemon-500);     --cs-accent: var(--lemon-400); }
+  .cs--blueberry{ --cs-bg: var(--blueberry-200); --cs-fg: var(--blueberry-500); --cs-accent: var(--blueberry-400); }
+  .cs--tangerine{ --cs-bg: var(--tangerine-200); --cs-fg: var(--tangerine-500); --cs-accent: var(--tangerine-400); }
+  .cs--slushie  { --cs-bg: var(--slushie-200);   --cs-fg: var(--slushie-500);   --cs-accent: var(--slushie-400); }
+  .cs--dragon   { --cs-bg: var(--dragon-200);    --cs-fg: var(--dragon-500);    --cs-accent: var(--dragon-400); }
+  .cs--pom      { --cs-bg: var(--pom-200);       --cs-fg: var(--pom-500);       --cs-accent: var(--pom-400); }
+
+  /* ── 03 · Your gift ──────────────────────────────────────── */
+  .gift{ position: relative; overflow: hidden; background: var(--oat-500); color: var(--oat-100); border-radius: 20px; padding: clamp(28px, 3.5vw, 40px); }
+  .gift::before{ content: ""; position: absolute; right: -120px; bottom: -120px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, rgba(217,119,87,.55) 0%, rgba(217,119,87,0) 65%); pointer-events: none; }
+  .gift > *{ position: relative; }
+  .gift__tag{ display:inline-flex; align-items:center; gap: 8px; background: rgba(217,119,87,.16); color: var(--tangerine-300); border: 1px solid rgba(217,119,87,.36); padding: 6px 14px; border-radius: 999px; font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .04em; }
+  .gift__tag img{ width: 16px; height: 16px; }
+  .gift h3{ font-family: var(--font-display); font-weight: 575; font-size: clamp(30px, 4vw, 48px); line-height: 1.02; letter-spacing: -.03em; margin: 16px 0 0; color: var(--oat-100); max-width: 18ch; text-wrap: balance; }
+  .gift h3 .num{ color: var(--tangerine-300); }
+  .gift__body{ font-size: 16px; line-height: 1.55; margin: 16px 0 0; max-width: 60ch; color: var(--oat-300); }
+  .gift__body b{ color: var(--oat-100); font-weight: 500; }
+  .gift__meta{ margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid rgba(254,253,251,.12); }
+  @media (max-width: 560px){ .gift__meta{ grid-template-columns: 1fr; } }
+  .gift__meta-cell{ padding: 16px 0; padding-right: 24px; border-right: 1px solid rgba(254,253,251,.12); }
+  .gift__meta-cell:last-child{ border-right: 0; padding-left: 24px; padding-right: 0; }
+  @media (max-width: 560px){ .gift__meta-cell{ border-right: 0; border-bottom: 1px solid rgba(254,253,251,.12); padding: 16px 0; } .gift__meta-cell:last-child{ border-bottom: 0; padding-left: 0; } }
+  .gift__k{ font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--oat-300); opacity: .7; }
+  .gift__v{ margin-top: 6px; font-size: 16px; color: var(--oat-100); line-height: 1.3; }
+  .gift__v b{ color: var(--tangerine-300); font-weight: 500; }
+  .perks{ margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 720px){ .perks{ grid-template-columns: 1fr; } }
+  .perk{ background: var(--oat-200); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .perk__icon{ width: 40px; height: 40px; border-radius: 12px; background: var(--oat-100); display: grid; place-items: center; color: var(--oat-500); }
+  .perk h4{ font-family: var(--font-display); font-weight: 500; font-size: 18px; line-height: 1.15; letter-spacing: -.01em; margin: 0; }
+  .perk p{ margin: 0; font-size: 13px; line-height: 1.5; color: var(--oat-400); }
+
+  /* ── 04 · Clay 101 video ─────────────────────────────────── */
+  .video-embed{ aspect-ratio: 16 / 9; width: 100%; border-radius: 16px; overflow: hidden; background: var(--oat-500); border: 1px solid var(--rule); }
+  .video-embed iframe{ width: 100%; height: 100%; border: 0; display: block; }
+  .video-foot{ margin-top: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .video-foot__meta{ font-family: var(--font-mono); font-size: 12px; color: var(--oat-400); }
+  .step-toggle{ display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+  .step-toggle input{ position: absolute; opacity: 0; pointer-events: none; }
+  .step-toggle__box{ width: 24px; height: 24px; border-radius: 8px; border: 1.5px solid var(--rule-strong); background: var(--oat-100); display: grid; place-items: center; color: transparent; transition: all .12s; }
+  .step-toggle:hover .step-toggle__box{ border-color: var(--oat-400); }
+  .step-toggle input:checked + .step-toggle__box{ background: var(--success); border-color: var(--success); color: #fff; }
+  .step-toggle__lbl{ font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--oat-400); }
+  .step-toggle input:checked ~ .step-toggle__lbl{ color: var(--success); }
+
+  /* ── 05 · Brainstorm ─────────────────────────────────────── */
+  .field{ margin-bottom: 20px; }
+  .field:last-child{ margin-bottom: 0; }
+  .field__label{ display:block; font-size: 15.5px; font-weight: 500; line-height: 1.45; margin-bottom: 8px; }
+  .field-num{ display:inline-flex; align-items:center; justify-content:center; width: 22px; height: 22px; border-radius: 999px; background: var(--tangerine-100); color: var(--tangerine-400); font-family: var(--font-mono); font-weight: 600; font-size: 12px; margin-right: 8px; }
+  .field input, .field textarea{ width: 100%; padding: 13px 15px; background: var(--oat-100); border: 1px solid var(--rule-strong); border-radius: 12px; font-family: var(--font-body); font-size: 15px; line-height: 1.5; color: var(--oat-500); transition: border-color .12s; }
+  .field input:focus, .field textarea:focus{ outline: 2px solid var(--tangerine); outline-offset: 2px; border-color: var(--tangerine); }
+  .field textarea{ resize: vertical; }
+  .brainstorm__foot{ margin-top: 22px; display:flex; align-items:center; gap: 12px; flex-wrap: wrap; padding-top: 20px; border-top: 1px solid var(--rule); }
+  .brainstorm__note{ font-family: var(--font-mono); font-size: 12px; color: var(--oat-400); }
+
+  /* ── 06 · Join Slack ─────────────────────────────────────── */
+  .slack-card{ background: #fff; border: 1px solid var(--rule-strong); border-radius: 14px; padding: 20px 22px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif; font-size: 14px; line-height: 1.55; margin-bottom: 18px; }
+  .slack-card__head{ display:flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .slack-card__avatar{ width: 36px; height: 36px; border-radius: 8px; background: linear-gradient(135deg, #FF7714, #B53D0A); display:grid; place-items:center; color: #fff; font-weight: 700; }
+  .slack-card__name{ font-weight: 700; color: #1d1c1d; }
+  .slack-card__meta{ font-family: var(--font-mono); font-size: 11px; color: var(--oat-400); margin-top: 1px; }
+  .slack-card__channel{ font-family: var(--font-mono); font-size: 12px; color: var(--oat-400); margin-left: auto; }
+  .slack-card__body{ color: #1d1c1d; white-space: pre-wrap; }
+  .slack-card__body b{ font-weight: 700; }
+  .slack-actions{ display:flex; flex-wrap: wrap; gap: 10px; }
+
+  /* ── 05 · Tools ──────────────────────────────────────────── */
+  .tool{ display:flex; align-items:center; gap: 18px; flex-wrap: wrap; background: var(--ube-100); border: 1px solid rgba(161,123,249,.22); border-radius: 18px; padding: 20px 22px; }
+  .tool__icon{ width: 48px; height: 48px; border-radius: 14px; background: var(--ube-300); color: #fff; display:grid; place-items:center; font-size: 24px; flex: 0 0 auto; }
+  .tool__main{ flex: 1; min-width: 220px; }
+  .tool__name{ font-family: var(--font-display); font-weight: 500; font-size: 20px; line-height: 1.15; letter-spacing: -.01em; margin: 0; }
+  .tool__desc{ margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: var(--oat-400); }
+
+  /* ── 06 · Builder journey (pyramid) ──────────────────────── */
+  .bd__head{ display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; margin-bottom: 20px; }
+  @media (max-width: 640px){ .bd__head{ grid-template-columns: 1fr; } }
+  .bd__legend{ display: flex; flex-direction: column; gap: 8px; }
+  .bd__legend-row{ display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--oat-400); white-space: nowrap; }
+  .bd__dot{ width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .bd__pyramid svg{ display: block; width: 100%; height: auto; max-width: 100%; }
+  .bd__foot{ margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding-top: 20px; border-top: 1px solid var(--rule); }
+  @media (max-width: 560px){ .bd__foot{ grid-template-columns: 1fr; } }
+  .bd__foot-cell p{ margin: 8px 0 0; font-size: 14px; line-height: 1.55; color: var(--oat-500); }
+
+  /* ── 07 · Invite team ────────────────────────────────────── */
+  .invite{ background: var(--oat-200); border-radius: 20px; padding: clamp(24px,3vw,32px); }
+  .invite__row{ display:flex; gap: 10px; flex-wrap: wrap; }
+  .invite__input{ flex: 1; min-width: 220px; height: 48px; padding: 0 16px; background: var(--oat-100); border: 1px solid var(--rule-strong); border-radius: 12px; font-family: var(--font-body); font-size: 15px; color: var(--oat-500); transition: border-color .12s; }
+  .invite__input:focus{ outline: 2px solid var(--tangerine); outline-offset: 2px; border-color: var(--tangerine); }
+  .invite__chips{ display:flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .invite__chips:empty{ display:none; }
+  .chip{ display:inline-flex; align-items:center; gap: 8px; padding: 7px 8px 7px 14px; background: var(--oat-100); border: 1px solid var(--rule); border-radius: 999px; font-size: 13.5px; color: var(--oat-500); }
+  .chip button{ width: 20px; height: 20px; border-radius: 999px; border: 0; background: var(--oat-200); color: var(--oat-500); display:grid; place-items:center; cursor: pointer; font-size: 11px; transition: background-color .12s; }
+  .chip button:hover{ background: var(--pom-200); color: var(--pom-500); }
+  .invite__err{ font-family: var(--font-mono); font-size: 12px; color: #9A2D0C; min-height: 14px; margin-top: 10px; }
+  .invite__share{ margin-top: 16px; padding-top: 18px; border-top: 1px solid var(--rule); display:flex; align-items:center; gap: 12px; flex-wrap: wrap; }
+  .invite__link{ flex:1; min-width: 220px; font-family: var(--font-mono); font-size: 12.5px; color: var(--oat-400); background: var(--oat-100); border: 1px dashed var(--rule-strong); border-radius: 10px; padding: 11px 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* footer */
+  footer{ background: var(--oat-500); color: var(--oat-200); padding: clamp(40px, 5vw, 64px) var(--gutter); }
+  .foot__inner{ max-width: var(--content-max); margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end; }
+  @media (max-width: 640px){ .foot__inner{ grid-template-columns: 1fr; align-items: start; } }
+  .foot__brand img{ height: 26px; }
+  .foot__support{ font-family: var(--font-mono); font-size: 12px; color: var(--oat-300); margin-top: 14px; }
+  .foot__links{ display:flex; flex-wrap: wrap; gap: 20px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+  .foot__links a{ color: var(--oat-200); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  .foot__links a:hover{ border-bottom-color: var(--tangerine); }
+</style>
+</head>
+<body>
+
+<header class="site-head" data-screen-label="Header">
+  <div class="site-head__inner">
+    <a class="brand" href="home.html" aria-label="Clay">
+      <img src="assets/logo/Clay_Logo_Mono_Wht.png" alt="Clay" />
+      <span class="brand__sep" aria-hidden="true"></span>
+      <span class="brand__crumb">AI GTM Workshop</span>
+    </a>
+    <nav class="topnav" aria-label="Workshop journey">
+      <a href="home.html"><span class="n">00</span><span>Home</span></a>
+      <a href="welcome.html" class="is-active"><span class="n">01</span><span>For You</span></a>
+      <a href="post-workshop.html"><span class="n">02</span><span>Post-workshop</span></a>
+    </nav>
+    <span></span>
+  </div>
+</header>
+
+<div class="betabar" data-screen-label="Beta notice">
+  <div class="betabar__inner">
+    <span class="betabar__tag"><i class="ph-fill ph-flask"></i>Beta</span>
+    <p class="betabar__txt"><b>You're not in the workshop yet.</b> Check your <a href="https://lu.ma" target="_blank" rel="noopener">Luma event page</a> to see if you've been approved to attend.</p>
+  </div>
+</div>
+
+<section class="hero" data-screen-label="01 Hero">
+  <div class="hero__inner">
+    <h1>Learn more about Clay <span class="rocket">while you wait</span>, <span data-field="first_name">Maya</span>.</h1>
+    <p class="hero__sub">This is your portal — the things we know about you and case studies we recommend you review based on your persona. There's a gift in here too; we just make sure you only get it if you're actually attending the workshop.</p>
+    <p class="hero__note">Heads up: check the <a href="https://lu.ma" target="_blank" rel="noopener">Luma event page</a> for your event status.</p>
+  </div>
+</section>
+
+<div class="shell">
+  <!-- sticky section nav -->
+  <nav class="secnav" aria-label="On this page" data-screen-label="Section nav">
+    <div class="secnav__cap">On this page</div>
+    <div class="secnav__list" id="secnav">
+      <a class="secnav__item is-active" href="#you"><span class="secnav__num">01</span><span class="secnav__lbl">You</span></a>
+      <a class="secnav__item" href="#studies"><span class="secnav__num">02</span><span class="secnav__lbl">Case studies</span></a>
+      <a class="secnav__item" href="#gift"><span class="secnav__num">03</span><span class="secnav__lbl">Your gift</span></a>
+      <a class="secnav__item" href="#crash"><span class="secnav__num">04</span><span class="secnav__lbl">Clay 101</span></a>
+      <a class="secnav__item" href="#tools"><span class="secnav__num">05</span><span class="secnav__lbl">Tools</span></a>
+      <a class="secnav__item" href="#brainstorm"><span class="secnav__num">06</span><span class="secnav__lbl">Brainstorm</span></a>
+      <a class="secnav__item" href="#slack"><span class="secnav__num">07</span><span class="secnav__lbl">Join Slack</span></a>
+      <a class="secnav__item" href="#journey"><span class="secnav__num">08</span><span class="secnav__lbl">Journey</span></a>
+      <a class="secnav__item" href="#invite"><span class="secnav__num">09</span><span class="secnav__lbl">Invite team</span></a>
+    </div>
+  </nav>
+
+  <div class="blocks">
+
+    <!-- ════ 01 · You ════ -->
+    <section class="block" id="you" data-screen-label="01 You">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">01</span>
+        <div class="block__title"><h2>What we have on you</h2></div>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <p class="block__lead">Pulled straight from your signup. Anything off, hit reply on your confirmation email and we'll fix it before workshop day.</p>
+        <div class="know__rows">
+          <div class="know__row"><div class="know__k">Operator</div><div class="know__v"><span data-field="first_name">Maya</span> <span data-field="last_name">Okonkwo</span> · <span data-field="job_title">Senior GTM Operations Manager</span> at <span data-field="company_name">Linear</span></div></div>
+          <div class="know__row"><div class="know__k">Workflow to build</div><div class="know__v" data-field="workflow_to_build">A CRM enrichment loop that surfaces dormant accounts worth re-engaging — refresh firmographics, score against ICP, ping #gtm-revival in Slack.</div></div>
+          <div class="know__row"><div class="know__k">Why this, why now</div><div class="know__v" data-field="why_this_use_case">My enrichment stack doesn't talk to itself. Every refresh is a 14-tab Chrome window and a CSV I lose.</div></div>
+          <div class="know__row"><div class="know__k">Top AI initiatives</div><div class="know__v" data-field="ai_initiatives">CRM enrichment + scoring · Outbound personalization at scale · Pipeline hygiene automation</div></div>
+          <div class="know__row"><div class="know__k">Clay fluency</div><div class="know__v"><span data-field="clay_fluency">2</span> / 4 · 1 = Never used → 4 = Power user</div></div>
+          <div class="know__row"><div class="know__k">Clay workspace</div><div class="know__v"><code data-field="clay_workspace_id">ws_linear_gtm_main</code></div></div>
+        </div>
+        <div class="know__edit">Edits via email reply only — keeps the audit trail clean.</div>
+      </div>
+    </section>
+
+    <!-- ════ 02 · Case studies ════ -->
+    <section class="block" id="studies" data-screen-label="02 Case studies">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">02</span>
+        <div class="block__title"><h2>Case studies we'd open first</h2></div>
+        <span class="block__hint">Matched to your workflow</span>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <p class="block__lead">Three Clay customers who shipped close to what you're building — a CRM enrichment loop with ICP scoring and signal alerts. Skim them before workshop day; we'll borrow the patterns that fit. Drop each customer's artwork into the colored panel.</p>
+        <div class="cs-gallery" id="studies-grid"><!-- rendered by JS --></div>
+      </div>
+    </section>
+
+    <!-- ════ 03 · Your gift ════ -->
+    <section class="block" id="gift" data-screen-label="03 Your gift">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">03</span>
+        <div class="block__title"><h2>What you get when you attend the workshop</h2></div>
+        <span class="block__hint">Unlocked when you attend</span>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <div class="gift">
+          <span class="gift__tag"><img src="assets/icons/Light-Bulb.png" alt=""/>A gift from us</span>
+          <h3>We added <span class="num">10,000 credits</span> to your workspace.</h3>
+          <p class="gift__body">Plus <b>Enterprise features unlocked for 30 days</b> — Claygent, AI columns, integrations, the works. Show up with a runway long enough to actually ship something.</p>
+          <div class="gift__meta">
+            <div class="gift__meta-cell">
+              <div class="gift__k">Workspace</div>
+              <div class="gift__v" data-field="clay_workspace_id">ws_linear_gtm_main</div>
+            </div>
+            <div class="gift__meta-cell">
+              <div class="gift__k">Enterprise access</div>
+              <div class="gift__v"><b>30 days</b> of enterprise features from the workshop</div>
+            </div>
+          </div>
+        </div>
+        <div class="perks">
+          <div class="perk">
+            <div class="perk__icon"><i class="ph-bold ph-users-three" style="font-size: 22px;"></i></div>
+            <h4>One-on-one with a Clay engineer</h4>
+            <p>Four hours of dedicated build time with someone who's shipped this pattern before.</p>
+          </div>
+          <div class="perk">
+            <div class="perk__icon"><i class="ph-bold ph-rocket-launch" style="font-size: 22px;"></i></div>
+            <h4>A workflow in production</h4>
+            <p>Not a sandbox demo. You leave with something running against your real data.</p>
+          </div>
+          <div class="perk">
+            <div class="perk__icon"><i class="ph-bold ph-share-network" style="font-size: 22px;"></i></div>
+            <h4>A shareable one-pager</h4>
+            <p>A personal page goes live the day after — for your team, your manager, your LinkedIn.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ 04 · Clay 101 ════ -->
+    <section class="block" id="crash" data-screen-label="04 Clay 101">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">04</span>
+        <div class="block__title"><h2>Clay 101 crash course</h2></div>
+        <span class="block__hint">~3 min · optional</span>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <p class="block__lead">New to Clay? Start here. Everything you need before walking in the room. Skip it if Clay's already in your hands.</p>
+        <div class="video-embed">
+          <iframe src="https://www.youtube.com/embed/mM__3BPKX58?si=Gruh6ZIWIinW69gn" title="Intro to Clay — Crash Course" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="video-foot">
+          <div>
+            <div style="font-weight: 500; font-size: 15px;">Intro to Clay — Crash Course</div>
+            <div class="video-foot__meta">Everything you need before walking in</div>
+          </div>
+          <label class="step-toggle" title="Mark watched">
+            <input type="checkbox" id="v1-done" />
+            <span class="step-toggle__box"><i class="ph-bold ph-check"></i></span>
+            <span class="step-toggle__lbl">I watched this</span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ 05 · Tools ════ -->
+    <section class="block" id="tools" data-screen-label="05 Tools">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">05</span>
+        <div class="block__title"><h2>Tools we recommend</h2></div>
+        <span class="block__hint">Optional, but builders swear by them</span>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <p class="block__lead">A couple of tools that make the build smoother — before and during the workshop.</p>
+        <div class="tool">
+          <div class="tool__icon"><i class="ph-bold ph-microphone"></i></div>
+          <div class="tool__main">
+            <h3 class="tool__name">Wispr Flow</h3>
+            <p class="tool__desc">Talk through your brainstorm instead of typing it — Wispr Flow turns speech into clean text in any field. Handy for the prompts below.</p>
+          </div>
+          <a class="btn btn--ink" href="https://wisprflow.ai/r?CHRIS143" target="_blank" rel="noopener"><i class="ph-bold ph-download-simple"></i><span>Get Wispr Flow</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ 06 · Brainstorm ════ -->
+    <section class="block" id="brainstorm" data-screen-label="06 Brainstorm">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">06</span>
+        <div class="block__title"><h2>Brainstorm your build</h2></div>
+        <span class="block__hint">The clearer, the more we pre-build</span>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <p class="block__lead">The five questions we asked at intake — refine your answers any time. The sharper they are, the more we pre-build for you before workshop day.</p>
+
+        <div class="field">
+          <label class="field__label"><span class="field-num">1</span>Walk us through the workflow you want to build — inputs → outputs → where it lands.</label>
+          <textarea id="q-workflow" rows="4" data-field="workflow_to_build">Inputs: 2,400 dormant HubSpot accounts (closed-lost in 2024). Outputs: refreshed firmographics, recent funding signals, and an ICP-fit score from Claygent. Lands in: HubSpot (write back as "warm" tag) plus a Slack digest in #gtm-revival.</textarea>
+        </div>
+        <div class="field">
+          <label class="field__label"><span class="field-num">2</span>What data do you have ready to plug in?</label>
+          <textarea id="q-data" rows="2">HubSpot view: "Closed-Lost · 2024" (2,402 rows). Plus our ICP definition pasted into a Notion doc — I'll share the link in the workshop Slack.</textarea>
+        </div>
+        <div class="field">
+          <label class="field__label"><span class="field-num">3</span>What system does the workflow need to write to?</label>
+          <textarea id="q-system" rows="2">HubSpot (write-back via native integration). Slack (#gtm-revival channel). CSV download for the SDR team to run alongside.</textarea>
+        </div>
+        <div class="field">
+          <label class="field__label"><span class="field-num">4</span>Who at your company needs to greenlight rolling this out?</label>
+          <input type="text" id="q-approver" value="Sarah Chen — VP Marketing" data-field="greenlight_approver" data-field-attr="value" />
+        </div>
+        <div class="field">
+          <label class="field__label"><span class="field-num">5</span>Anyone else on your team should be in this room with you?</label>
+          <textarea id="q-team" rows="2">Devon Park — Marketing Ops · Aiden Liu — SDR Lead. Devon is the one who'd actually maintain this; Aiden's the consumer.</textarea>
+        </div>
+
+        <div class="brainstorm__foot">
+          <a class="btn btn--tangerine" id="finish-brainstorm" href="#slack"><i class="ph-bold ph-paper-plane-tilt"></i><span>Finish &amp; submit to Slack</span></a>
+          <span class="brainstorm__note">Next: post it in the Clay Slack group.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ 07 · Join Slack ════ -->
+    <section class="block" id="slack" data-screen-label="07 Join Slack">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">07</span>
+        <div class="block__title"><h2>Join the private Slack group</h2></div>
+        <span class="block__hint">Copy · paste · post</span>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <p class="block__lead">Share your build with us before workshop day. Copy it, open Slack, and post it in <b>#clay-workshops</b>.</p>
+
+        <div class="slack-card" aria-label="Slack message preview">
+          <div class="slack-card__head">
+            <div class="slack-card__avatar" data-field="first_name" data-bind-initial>M</div>
+            <div>
+              <div class="slack-card__name"><span data-field="first_name">Maya</span> <span data-field="last_name">Okonkwo</span></div>
+              <div class="slack-card__meta">Today</div>
+            </div>
+            <div class="slack-card__channel"># clay-workshops</div>
+          </div>
+          <div class="slack-card__body" id="slack-body">👋 Hey #clay-workshops — I'm <b><span data-field="first_name">Maya</span> <span data-field="last_name">Okonkwo</span></b>, <span data-field="job_title">Senior GTM Ops</span> at <b data-field="company_name">Linear</b>. Excited for the workshop.
+
+<b>What I'm building:</b> <span data-bind="q-workflow">…</span>
+
+<b>Data I have:</b> <span data-bind="q-data">…</span>
+
+<b>Where it needs to land:</b> <span data-bind="q-system">…</span>
+
+<b>Greenlight from:</b> <span data-bind="q-approver">…</span>
+
+<b>Bringing with me:</b> <span data-bind="q-team">…</span>
+
+Excited to ship. 🚀</div>
+        </div>
+
+        <div class="slack-actions">
+          <button class="btn btn--ghost" type="button" id="copy-slack"><i class="ph ph-copy"></i><span>Copy message</span></button>
+          <a class="btn btn--ink" href="https://join.slack.com/t/clayrunhq/shared_invite/zt-3uyf25mqq-czoaZvxA7WJAburC5ehvzw" target="_blank" rel="noopener"><i class="ph ph-arrow-up-right"></i><span>Open Slack</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ 08 · Builder journey ════ -->
+    <section class="block" id="journey" data-screen-label="08 Journey">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">08</span>
+        <div class="block__title"><h2>Your builder journey</h2></div>
+        <span class="block__hint">How we backward-design it</span>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <div class="bd__head">
+          <p class="block__lead" style="margin:0;">An example of how we work backward from the outcome you want, down to your real CRM — and that's the path we follow on workshop day. Read top-down to design, bottom-up to build.</p>
+          <div class="bd__legend">
+            <span class="bd__legend-row"><span class="bd__dot" style="background:#6366F1;"></span>Top-down · design</span>
+            <span class="bd__legend-row"><span class="bd__dot" style="background:#F43F5E;"></span>Bottom-up · build</span>
+          </div>
+        </div>
+        <div class="bd__pyramid">
+          <svg viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Backwards design pyramid for the CRM enrichment loop">
+            <defs>
+              <linearGradient id="bdGoal" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#6366F1" stop-opacity="0.18" /><stop offset="100%" stop-color="#6366F1" stop-opacity="0.05" /></linearGradient>
+              <linearGradient id="bdDeliv" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#0EA5E9" stop-opacity="0.18" /><stop offset="100%" stop-color="#0EA5E9" stop-opacity="0.05" /></linearGradient>
+              <linearGradient id="bdLogic" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#F59E0B" stop-opacity="0.20" /><stop offset="100%" stop-color="#F59E0B" stop-opacity="0.06" /></linearGradient>
+              <linearGradient id="bdData" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#10B981" stop-opacity="0.18" /><stop offset="100%" stop-color="#10B981" stop-opacity="0.05" /></linearGradient>
+              <linearGradient id="bdEnrich" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#F97316" stop-opacity="0.20" /><stop offset="100%" stop-color="#F97316" stop-opacity="0.06" /></linearGradient>
+              <linearGradient id="bdUni" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#F43F5E" stop-opacity="0.18" /><stop offset="100%" stop-color="#F43F5E" stop-opacity="0.05" /></linearGradient>
+              <filter id="bdShadow" x="-5%" y="-25%" width="110%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0F172A" flood-opacity="0.06" /></filter>
+              <marker id="bdArrow" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="9" markerHeight="9" orient="auto"><path d="M0,0 L5,9 L10,0" fill="none" stroke="#CBD5E1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></marker>
+            </defs>
+            <text x="600" y="48" text-anchor="middle" font-family="Roobert, Inter, sans-serif" font-size="30" font-weight="600" fill="#0F172A" letter-spacing="-0.6">Backwards Design — CRM Enrichment Loop</text>
+            <text x="600" y="78" text-anchor="middle" font-family="Roobert SemiMono, Inter, monospace" font-size="12" font-weight="500" fill="#64748B" letter-spacing="3">OUTCOME &#8594; STARTING POINT</text>
+            <g filter="url(#bdShadow)"><rect x="350" y="120" width="500" height="80" rx="16" fill="url(#bdGoal)" stroke="#6366F1" stroke-width="1.5" /><text x="378" y="148" font-family="Roobert SemiMono, Inter, monospace" font-size="11" font-weight="700" fill="#6366F1" letter-spacing="2">THE GOAL</text><text x="378" y="178" font-family="Roobert, Inter, sans-serif" font-size="14" font-weight="500" fill="#0F172A">SDRs know which dormant accounts to revive this week.</text></g>
+            <line x1="600" y1="208" x2="600" y2="220" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#bdArrow)" />
+            <g filter="url(#bdShadow)"><rect x="290" y="234" width="620" height="80" rx="16" fill="url(#bdDeliv)" stroke="#0EA5E9" stroke-width="1.5" /><text x="318" y="262" font-family="Roobert SemiMono, Inter, monospace" font-size="11" font-weight="700" fill="#0EA5E9" letter-spacing="2">DELIVERABLE</text><text x="318" y="292" font-family="Roobert, Inter, sans-serif" font-size="14" font-weight="500" fill="#0F172A">A weekly #gtm-revival Slack digest of warm-tagged accounts.</text></g>
+            <line x1="600" y1="322" x2="600" y2="334" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#bdArrow)" />
+            <g filter="url(#bdShadow)"><rect x="230" y="348" width="740" height="80" rx="16" fill="url(#bdLogic)" stroke="#F59E0B" stroke-width="1.5" /><text x="258" y="376" font-family="Roobert SemiMono, Inter, monospace" font-size="11" font-weight="700" fill="#B45309" letter-spacing="2">LOGIC NEEDED</text><text x="258" y="406" font-family="Roobert, Inter, sans-serif" font-size="14" font-weight="500" fill="#0F172A">Score 0–10 against ICP using firmographics + funding; flag &#8805;7 as warm.</text></g>
+            <line x1="600" y1="436" x2="600" y2="448" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#bdArrow)" />
+            <g filter="url(#bdShadow)"><rect x="170" y="462" width="860" height="80" rx="16" fill="url(#bdData)" stroke="#10B981" stroke-width="1.5" /><text x="198" y="490" font-family="Roobert SemiMono, Inter, monospace" font-size="11" font-weight="700" fill="#047857" letter-spacing="2">DATA REQUIRED</text><text x="198" y="520" font-family="Roobert, Inter, sans-serif" font-size="14" font-weight="500" fill="#0F172A">Firmographics, recent funding, employee growth, ICP definition.</text></g>
+            <line x1="600" y1="550" x2="600" y2="562" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#bdArrow)" />
+            <g filter="url(#bdShadow)"><rect x="110" y="576" width="980" height="80" rx="16" fill="url(#bdEnrich)" stroke="#F97316" stroke-width="1.5" /><text x="138" y="604" font-family="Roobert SemiMono, Inter, monospace" font-size="11" font-weight="700" fill="#C2410C" letter-spacing="2">ENRICHMENTS</text><text x="138" y="634" font-family="Roobert, Inter, sans-serif" font-size="14" font-weight="500" fill="#0F172A">Clearbit &#8594; ZoomInfo &#8594; Apollo waterfall, plus Claygent for ICP reasoning.</text></g>
+            <line x1="600" y1="664" x2="600" y2="676" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#bdArrow)" />
+            <g filter="url(#bdShadow)"><rect x="50" y="690" width="1100" height="80" rx="16" fill="url(#bdUni)" stroke="#F43F5E" stroke-width="1.5" /><text x="78" y="718" font-family="Roobert SemiMono, Inter, monospace" font-size="11" font-weight="700" fill="#BE123C" letter-spacing="2">STARTING UNIVERSE</text><text x="78" y="748" font-family="Roobert, Inter, sans-serif" font-size="14" font-weight="500" fill="#0F172A">2,400 dormant HubSpot accounts — stale firmographics, no recent funding context.</text></g>
+            <text x="600" y="820" text-anchor="middle" font-family="Roobert, Inter, sans-serif" font-size="13" font-style="italic" fill="#64748B">Read top-down to design  ·  Read bottom-up to build</text>
+          </svg>
+        </div>
+        <div class="bd__foot">
+          <div class="bd__foot-cell">
+            <div class="eyebrow">First action this week</div>
+            <p>Pull the 2,400-row "Closed-Lost · 2024" view to CSV and drop it in your workshop Clay table.</p>
+          </div>
+          <div class="bd__foot-cell">
+            <div class="eyebrow">What we'll pre-build</div>
+            <p>The 3-source enrichment waterfall + Claygent ICP-scoring column, ready to point at your data on workshop day.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ 09 · Invite team ════ -->
+    <section class="block" id="invite" data-screen-label="09 Invite team">
+      <div class="block__bar" role="button" tabindex="0" aria-expanded="true">
+        <span class="block__idx">09</span>
+        <div class="block__title"><h2>Invite your team</h2></div>
+        <span class="block__chev"><i class="ph-bold ph-caret-down"></i></span>
+      </div>
+      <div class="block__body">
+        <p class="block__lead">The best builds get rolled out. Add the coworkers who should see what you ship — they'll get a link to your post-workshop page the day after.</p>
+        <div class="invite">
+          <div class="invite__row">
+            <input class="invite__input" id="invite-email" type="email" placeholder="coworker@company.com" autocomplete="off" />
+            <button class="btn btn--ghost" type="button" id="invite-add"><i class="ph-bold ph-plus"></i><span>Add</span></button>
+          </div>
+          <div class="invite__err" id="invite-err" aria-live="polite"></div>
+          <div class="invite__chips" id="invite-chips"></div>
+          <div class="invite__share">
+            <div class="invite__link" id="invite-link" title="">post-workshop.html</div>
+            <button class="btn btn--ink" type="button" id="invite-send"><i class="ph-bold ph-paper-plane-tilt"></i><span>Email invites</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer data-screen-label="Footer">
+  <div class="foot__inner">
+    <div class="foot__brand">
+      <img src="assets/logo/Clay_Logo_Mono_Wht.png" alt="Clay" />
+      <p class="foot__support">Reply to your workshop confirmation email for support.</p>
+    </div>
+    <nav class="foot__links" aria-label="Program links">
+      <a href="home.html">Home ↗</a>
+      <a href="https://university.clay.com">Clay University ↗</a>
+      <a href="#">Clay Slack community ↗</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* ── apply intake data (text + form fields) ───────────────── */
+  function applyDataForYou(){
+    const d = window.WORKSHOP_DATA || {};
+    document.querySelectorAll('[data-field]').forEach(el => {
+      const k = el.getAttribute('data-field');
+      const v = d[k];
+      if (v == null) return;
+      const tag = el.tagName;
+      const attr = el.getAttribute('data-field-attr');
+      if (attr === 'value' || tag === 'INPUT' || tag === 'TEXTAREA'){
+        el.value = Array.isArray(v) ? v.join(' · ') : v;
+      } else if (attr){
+        el.setAttribute(attr, v);
+      } else {
+        el.textContent = Array.isArray(v) ? v.join(' · ') : v;
+      }
+    });
+  }
+  applyDataForYou();
+
+  /* ── brainstorm answers: persist so they carry into pre-flight ── */
+  var BRAINSTORM_KEY = 'clay_ws_brainstorm';
+  var brainstormFields = ['q-workflow','q-data','q-system','q-approver','q-team'];
+  function saveBrainstorm(){
+    try {
+      var o = {};
+      brainstormFields.forEach(function(id){ var el = document.getElementById(id); if (el) o[id] = el.value; });
+      localStorage.setItem(BRAINSTORM_KEY, JSON.stringify(o));
+    } catch(e){}
+  }
+  function loadBrainstorm(){
+    try {
+      var raw = localStorage.getItem(BRAINSTORM_KEY);
+      if (!raw) return;
+      var o = JSON.parse(raw);
+      brainstormFields.forEach(function(id){
+        var el = document.getElementById(id);
+        if (el && o[id] != null && o[id] !== '') el.value = o[id];
+      });
+    } catch(e){}
+  }
+  loadBrainstorm(); // saved answers win over the seeded defaults
+
+  /* ── Slack preview: mirror the brainstorm answers into the message ── */
+  function syncSlackPreview(){
+    brainstormFields.forEach(function(id){
+      var el = document.getElementById(id);
+      var v = el ? (el.value || '').trim() : '';
+      document.querySelectorAll('[data-bind="'+id+'"]').forEach(function(n){ n.textContent = v || '…'; });
+    });
+  }
+  syncSlackPreview();
+
+  brainstormFields.forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function(){ saveBrainstorm(); syncSlackPreview(); });
+  });
+
+  /* ── copy Slack message ───────────────────────────────────── */
+  var copyBtn = document.getElementById('copy-slack');
+  if (copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var body = document.getElementById('slack-body');
+      var text = body ? body.innerText : '';
+      var label = copyBtn.querySelector('span');
+      var done = function(){ if(label){ var o=label.textContent; label.textContent='Copied!'; setTimeout(function(){ label.textContent=o; }, 1600); } };
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done).catch(function(){ done(); });
+      } else {
+        var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta); done();
+      }
+    });
+  }
+  // finish the brainstorm → save + glide to the Join Slack section
+  var finishBtn = document.getElementById('finish-brainstorm');
+  if (finishBtn) finishBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    saveBrainstorm();
+    var el = document.getElementById('slack');
+    if (!el) return;
+    el.classList.remove('is-collapsed');
+    var bar = el.querySelector('.block__bar'); if (bar) bar.setAttribute('aria-expanded', 'true');
+    var beta = document.querySelector('.betabar'); var betaH = beta ? beta.getBoundingClientRect().height : 0;
+    var isMobile = window.matchMedia('(max-width: 900px)').matches;
+    var offset = 64 + betaH + (isMobile ? 50 : 0) + 14;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - offset, behavior: 'smooth' });
+  });
+
+  /* ── render recommended case studies ──────────────────────── */
+  function renderStudies(){
+    const grid = document.getElementById('studies-grid');
+    if (!grid || !window.pickCaseStudies) return;
+    const tags = (window.WORKSHOP_DATA && window.WORKSHOP_DATA.workflow_tags) || ['enrichment','scoring','signals'];
+    const studies = window.pickCaseStudies(tags, 3);
+    grid.innerHTML = studies.map((s, i) => {
+      const label = (window.WORKFLOW_LABELS && window.WORKFLOW_LABELS[s.matchedTag]) || s.category;
+      const metrics = s.impact.slice(0, 2).map(m =>
+        `<div class="cs__metric"><div class="cs__num">${m.num}</div><div class="cs__mlabel">${m.label}</div></div>`
+      ).join('');
+      return `
+        <a class="cs cs--${s.color}" href="https://www.clay.com/customers" target="_blank" rel="noopener" aria-label="${s.co} case study">
+          <image-slot class="cs__media" id="cs-${s.id}" shape="rect" placeholder="Drop ${s.co} artwork"></image-slot>
+          <div class="cs__body">
+            <div class="cs__eyebrow">${label}</div>
+            <h3 class="cs__name">${s.co}</h3>
+            <p class="cs__title">${s.title}</p>
+            <p class="cs__desc">${s.problem}</p>
+            <div class="cs__metrics">${metrics}</div>
+            <span class="cs__cta">Read case study <i class="ph-bold ph-arrow-right"></i></span>
+          </div>
+        </a>`;
+    }).join('');
+  }
+  renderStudies();
+
+  /* ── collapsible blocks ───────────────────────────────────── */
+  document.querySelectorAll('.block__bar').forEach(bar => {
+    const block = bar.closest('.block');
+    function toggle(){
+      const collapsed = block.classList.toggle('is-collapsed');
+      bar.setAttribute('aria-expanded', String(!collapsed));
+    }
+    bar.addEventListener('click', toggle);
+    bar.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+    });
+  });
+
+  /* ── video watched toggle ─────────────────────────────────── */
+  const v1 = document.getElementById('v1-done');
+  if (v1){ v1.addEventListener('change', () => {}); }
+
+  /* ── sticky section nav: scroll-spy + smooth jump ─────────── */
+  const navItems = Array.from(document.querySelectorAll('.secnav__item'));
+  const navById = {};
+  navItems.forEach(a => { navById[a.getAttribute('href').slice(1)] = a; });
+  const headH = 64;
+
+  const sections = Array.from(document.querySelectorAll('.block'));
+
+  function topOffset(){
+    const beta = document.querySelector('.betabar');
+    const betaH = beta ? beta.getBoundingClientRect().height : 0;
+    const isMobile = window.matchMedia('(max-width: 900px)').matches;
+    const navH = isMobile ? 50 : 0;
+    return headH + betaH + navH + 14;
+  }
+  function setActive(id){
+    navItems.forEach(n => n.classList.toggle('is-active', n === navById[id]));
+  }
+
+  let spyLock = 0;
+  navItems.forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (!el) return;
+      // expand if collapsed so the jump lands somewhere useful
+      el.classList.remove('is-collapsed');
+      const bar = el.querySelector('.block__bar');
+      if (bar) bar.setAttribute('aria-expanded', 'true');
+      setActive(id);                 // highlight the clicked item immediately
+      spyLock = Date.now() + 800;    // pause scroll-spy through the smooth scroll
+      const top = el.getBoundingClientRect().top + window.pageYOffset - topOffset();
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // scroll-spy: the active section is the last one whose top has passed the read line
+  function updateSpy(){
+    if (Date.now() < spyLock) return;
+    const line = topOffset() + 8;
+    let current = sections[0];
+    for (const s of sections){
+      if (s.getBoundingClientRect().top <= line) current = s;
+      else break;
+    }
+    if (current) setActive(current.id);
+  }
+  window.addEventListener('scroll', updateSpy, { passive: true });
+  window.addEventListener('resize', updateSpy);
+  updateSpy();
+
+  /* ── invite your team (functional mailto) ─────────────────── */
+  const emailInput = document.getElementById('invite-email');
+  const addBtn = document.getElementById('invite-add');
+  const chipsEl = document.getElementById('invite-chips');
+  const errEl = document.getElementById('invite-err');
+  const sendBtn = document.getElementById('invite-send');
+  const linkEl = document.getElementById('invite-link');
+  const emails = [];
+
+  // absolute URL to the post-workshop page (best-effort for local/file contexts)
+  let shareUrl = 'post-workshop.html';
+  try { shareUrl = new URL('post-workshop.html', window.location.href).href; } catch(e){}
+  // show a friendly descriptor; keep the real URL in the tooltip + mailto body
+  linkEl.innerHTML = '<i class="ph-bold ph-link" style="margin-right:6px;opacity:.6;"></i>Your post-workshop page · goes live the day after';
+  linkEl.title = shareUrl;
+
+  const valid = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+  function renderChips(){
+    chipsEl.innerHTML = emails.map((e,i) =>
+      `<span class="chip">${e}<button type="button" data-i="${i}" aria-label="Remove ${e}"><i class="ph-bold ph-x"></i></button></span>`
+    ).join('');
+    chipsEl.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => { emails.splice(+b.dataset.i, 1); renderChips(); });
+    });
+  }
+
+  function addEmail(){
+    const raw = (emailInput.value || '').trim().replace(/,$/, '');
+    if (!raw){ return; }
+    if (!valid(raw)){ errEl.textContent = "That doesn't look like an email address."; return; }
+    if (emails.includes(raw)){ errEl.textContent = 'Already added.'; emailInput.value=''; return; }
+    emails.push(raw);
+    emailInput.value = '';
+    errEl.textContent = '';
+    renderChips();
+  }
+
+  addBtn.addEventListener('click', addEmail);
+  emailInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ','){ e.preventDefault(); addEmail(); }
+    else { errEl.textContent = ''; }
+  });
+
+  sendBtn.addEventListener('click', () => {
+    // include anything still typed in the box
+    if ((emailInput.value || '').trim()) addEmail();
+    if (emails.length === 0){ errEl.textContent = 'Add at least one teammate first.'; emailInput.focus(); return; }
+    const d = window.WORKSHOP_DATA || {};
+    const name = [d.first_name, d.last_name].filter(Boolean).join(' ') || 'A teammate';
+    const subject = `${name} wants to show you what they're building at the Clay AI GTM Workshop`;
+    const body =
+`Hi —
+
+I'm building a real GTM workflow at Clay's AI GTM Workshop, and my post-workshop page goes live the day after with what I shipped.
+
+Here's the page: ${shareUrl}
+
+Worth a look — this is the kind of automation I'd love to roll out with you.
+
+— ${name}`;
+    const to = emails.join(',');
+    window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+})();
+</script>
+</body>
+</html>

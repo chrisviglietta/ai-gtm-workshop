@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>try{if(localStorage.getItem('clay_ws_unlocked')!=='1'){location.replace('home.html');}}catch(e){}</script>
+<title>Maya Okonkwo · Clay AI GTM Workshop graduate</title>
+<link rel="stylesheet" href="assets/colors_and_type.css" />
+<link rel="icon" href="assets/logo/Clay_Logo_Icon.png" />
+<script src="data.js"></script>
+<script src="auth.js"></script>
+<style>
+  /* ── page chrome ────────────────────────────────────────── */
+  :root{
+    --gutter: clamp(20px, 5vw, 96px);
+    --col-max: 1320px;
+    --content-max: 1040px;
+    --tangerine: var(--tangerine-300);
+    --tangerine-ink: var(--tangerine-500);
+    --rule: rgba(27,26,24,.12);
+    --rule-light: rgba(27,26,24,.08);
+  }
+  *{ box-sizing: border-box; }
+  html{ background: var(--oat-100); }
+  body{
+    font-family: var(--font-body);
+    color: var(--oat-500);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background:
+      linear-gradient(180deg, rgba(254,253,251,.18) 0%, rgba(254,253,251,.22) 100%),
+      url("assets/clay-landscape.png") center top / cover no-repeat;
+    background-attachment: fixed, fixed;
+  }
+  a{ color: inherit; }
+  img{ display:block; max-width:100%; }
+
+  /* fixed top header */
+  .site-head{
+    position: sticky; top:0; z-index:50;
+    background: #0E0D0B;
+    border-bottom: 1px solid rgba(254,253,251,.10);
+  }
+  .site-head__inner{
+    max-width: 100%;
+    padding: 14px var(--gutter);
+    display:flex; align-items:center; justify-content:space-between;
+    gap: 16px;
+  }
+  .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+  .brand__logo{ height: 28px; width:auto; }
+  .brand__sep{ width:1px; height:20px; background: rgba(254,253,251,.20); }
+  .brand__crumb{
+    font-family: var(--font-mono); font-size: 12px; font-weight:500;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--oat-300); white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+  }
+  .brand__crumb b{ color: var(--oat-100); font-weight:500; }
+  .head-actions{ display:flex; align-items:center; gap:8px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    height: 40px; padding: 0 18px; border-radius: 999px;
+    font-family: var(--font-body); font-size: 14px; font-weight: 500;
+    border: 1px solid transparent; cursor:pointer; text-decoration: none;
+    transition: background-color .12s ease, color .12s ease, border-color .12s ease, transform .12s ease;
+    white-space: nowrap;
+  }
+  .btn--ink{ background: var(--oat-500); color: var(--oat-100); }
+  .btn--ink:hover{ background:#000; }
+  .btn--ghost{ background: transparent; color: var(--oat-500); border-color: var(--rule); }
+  .btn--ghost:hover{ background: var(--oat-200); }
+  .btn--tangerine{ background: var(--tangerine); color: var(--tangerine-ink); }
+  .btn--tangerine:hover{ background: var(--tangerine-400); color: var(--oat-100); }
+  .btn--cream-on-dark{ background: var(--oat-100); color: var(--oat-500); border-color: var(--oat-100); }
+  .btn--cream-on-dark:hover{ background: #fff; }
+  .btn--lg{ height: 52px; padding: 0 28px; font-size: 16px; }
+  .btn .ph{ font-size: 16px; }
+
+  /* ── hero ───────────────────────────────────────────────── */
+  .hero{
+    position: relative;
+    background: #cbd810;
+    color: #1c1b18;
+    overflow: hidden;
+  }
+  .hero__inner{
+    max-width: var(--col-max);
+    margin: 0 auto;
+    padding: clamp(64px, 9vw, 128px) var(--gutter) clamp(64px, 8vw, 112px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(24px, 4vw, 64px);
+    align-items: start;
+    position: relative; z-index:2;
+  }
+  @media (max-width: 880px){
+    .hero__inner{ grid-template-columns: 1fr; }
+    .hero__seal{ order: -1; }
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap: 10px;
+    padding: 10px 18px; border-radius: 999px;
+    background: var(--oat-100);
+    font-family: var(--font-mono); font-weight: 500;
+    font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--tangerine-ink);
+  }
+  .pill .dot{ width:6px; height:6px; border-radius:999px; background: var(--tangerine-ink); opacity:.6; }
+  .hero h1{
+    font-family: var(--font-display);
+    font-weight: 575;
+    font-size: clamp(48px, 7.4vw, 128px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 28px 0 0;
+    text-wrap: balance;
+    font-feature-settings: "ss01" on, "ss10" on, "ss11" on;
+  }
+  .hero h1 .built{ color: #3859f9; display:block; }
+  .hero h1 .name{ display:block; }
+  .hero__sub{
+    margin-top: 28px;
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.4;
+    max-width: 640px;
+    color: #2b2a26;
+  }
+  .hero__rule{
+    border:0; border-top: 1px solid rgba(0,0,0,.20);
+    margin: 40px 0 28px; max-width: 640px;
+  }
+  .hero__meta{ max-width: 640px; }
+  .hero__meta-eyebrow{
+    font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--tangerine-ink); opacity:.7;
+  }
+  .hero__meta-name{
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(22px, 2vw, 28px); line-height: 1.1; margin-top: 6px;
+  }
+  .hero__meta-bits{ font-size: 16px; margin-top: 6px; opacity: .85; }
+  .hero__meta-link{
+    display: inline-flex; align-items:center; gap:6px;
+    margin-top: 14px;
+    font-family: var(--font-mono); font-weight:500; font-size: 13px;
+    letter-spacing: .08em; text-transform: uppercase;
+    color: var(--tangerine-ink);
+    border-bottom: 1.5px solid var(--tangerine-ink);
+    padding-bottom: 2px; text-decoration: none;
+  }
+  .hero__case{ margin-top: 22px; font-size: 16px; line-height:1.5; }
+  .hero__case b{ font-weight: 600; }
+
+  /* circular seal */
+  .hero__seal{
+    width: clamp(160px, 16vw, 220px);
+    aspect-ratio: 1/1; position: relative;
+    flex: 0 0 auto;
+  }
+  .hero__seal-circle{
+    position:absolute; inset:0;
+    background: var(--oat-100);
+    border-radius: 999px;
+    display: grid; place-items: center;
+  }
+  .hero__seal-circle img{ width: 60%; height:auto; }
+  .hero__seal-text{
+    position: absolute; inset:0; animation: spin 28s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* tile-stack flower decoration */
+  .hero__flower{
+    position: absolute;
+    right: -60px; bottom: -120px;
+    width: clamp(280px, 32vw, 480px);
+    pointer-events: none;
+    z-index: 1;
+    transform: rotate(-8deg);
+  }
+  @media (max-width: 880px){
+    .hero__flower{ right: -100px; bottom: -160px; width: 320px; }
+  }
+
+  /* ── ticker ─────────────────────────────────────────────── */
+  .ticker{
+    background: var(--oat-500); color: var(--oat-100);
+    overflow: hidden; padding: 22px 0;
+    border-top: 1px solid var(--oat-500);
+  }
+  .ticker__track{
+    display:flex; gap: 48px; white-space: nowrap;
+    animation: marquee 38s linear infinite;
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 48px); letter-spacing: -0.02em;
+    align-items: center;
+  }
+  .ticker__track span{ display:inline-flex; align-items:center; gap: 48px; }
+  .ticker__track .dot{
+    width: 14px; height: 14px; border-radius: 999px; background: var(--tangerine);
+    flex: 0 0 auto;
+  }
+  .ticker__track img{ height: clamp(36px, 4vw, 60px); width: auto; }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── section scaffolding ────────────────────────────────── */
+  section{ padding: clamp(72px, 8vw, 128px) var(--gutter); }
+  .wrap{ max-width: var(--col-max); margin: 0 auto; }
+  .grid-2{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  @media (max-width: 880px){
+    .grid-2{ grid-template-columns: 1fr; gap: 32px; }
+  }
+  .eyebrow{
+    font-family: var(--font-mono); font-weight: 500;
+    font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--oat-400);
+  }
+  h2{
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(40px, 5.4vw, 80px);
+    line-height: .96; letter-spacing: -.03em;
+    text-wrap: balance; margin: 16px 0 0;
+  }
+  h2.with-period::after{ content: '.'; color: var(--tangerine); }
+  h3{
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(24px, 2.4vw, 32px);
+    line-height: 1.05; letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .lede{
+    font-size: 18px; line-height: 1.55; margin: 24px 0 0;
+    color: var(--oat-500); max-width: 60ch;
+  }
+
+  .tile-deco{
+    width: clamp(140px, 16vw, 220px); height: auto;
+    transform: rotate(-6deg);
+  }
+
+  /* ── meet section ─────────────────────────────────────── */
+  .meet .grid-2{ align-items: start; }
+  .meet__quote{
+    margin-top: 48px;
+    border-left: 4px solid var(--tangerine);
+    padding: 4px 0 4px 28px;
+    font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(28px, 3.2vw, 44px); line-height: 1.1;
+    letter-spacing: -.02em; text-wrap: balance;
+  }
+  .meet__attr{ margin-top: 28px; }
+  .meet__attr-name{ font-weight: 600; font-size: 16px; }
+  .meet__attr-role{
+    font-family: var(--font-mono); font-size: 12px; font-weight:500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400);
+    margin-top: 6px;
+  }
+
+  /* ── outcomes ───────────────────────────────────────────── */
+  .outcomes{
+    background: rgba(203,216,16,.16);
+    padding-top: clamp(72px, 8vw, 112px);
+  }
+  .outcomes__head{
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0,1fr);
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 880px){
+    .outcomes__head{ grid-template-columns: 1fr; }
+  }
+  .outcomes__title{
+    display:flex; align-items:flex-start; gap: 24px;
+  }
+  .outcomes__title img{ width: 64px; height: 64px; flex:0 0 auto; }
+  .verify-card{
+    border: 1px solid var(--tangerine-200);
+    background: var(--oat-100);
+    border-radius: 14px;
+    padding: 22px 28px;
+    font-family: var(--font-mono); font-size: 13px;
+    line-height: 1.6;
+    display: grid; grid-template-columns: auto 1fr;
+    column-gap: 24px; row-gap: 8px;
+    max-width: 460px; justify-self: end;
+  }
+  @media (max-width: 880px){ .verify-card{ justify-self: start; } }
+  .verify-card dt{
+    color: var(--oat-400); text-transform: uppercase; letter-spacing: .08em;
+    font-weight: 500;
+  }
+  .verify-card dd{ margin: 0; color: var(--oat-500); font-weight: 500; }
+
+  .stats{
+    margin-top: clamp(48px, 6vw, 80px);
+    border-top: 1px solid var(--oat-500);
+    border-bottom: 1px solid var(--oat-500);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 880px){
+    .stats{ grid-template-columns: 1fr; }
+    .stats > .stat:not(:last-child){
+      border-bottom: 1px solid var(--rule);
+    }
+  }
+  .stat{
+    padding: clamp(40px, 5vw, 64px) clamp(24px, 3vw, 40px);
+    border-right: 1px solid var(--rule);
+  }
+  .stat:last-child{ border-right: 0; }
+  @media (max-width: 880px){ .stat{ border-right: 0; } }
+  .stat__num{
+    font-family: var(--font-display);
+    font-weight: 575;
+    font-size: clamp(56px, 6.4vw, 96px);
+    line-height: .95; letter-spacing: -.04em;
+  }
+  .stat__num small{
+    font-size: .55em; font-weight: 500; letter-spacing: -.02em; color: var(--oat-400);
+    margin-left: 6px;
+  }
+  .stat__label{
+    margin-top: 18px; font-size: 17px; line-height: 1.4;
+    max-width: 32ch;
+  }
+  .stat__source{
+    margin-top: 18px;
+    font-family: var(--font-mono); font-size: 12px; font-weight:500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400);
+  }
+  .stat__placeholder{
+    display:inline-block; padding: 4px 10px; border-radius: 999px;
+    background: var(--oat-200); color: var(--oat-400);
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+
+  /* ── build / case study ─────────────────────────────────── */
+  .build .check-marker{
+    display:inline-flex; align-items:center; justify-content:center;
+    width: 56px; height: 56px; border-radius: 999px;
+    background: var(--lime-200); color: var(--lime-500);
+    font-family: var(--font-display); font-weight: 600; font-size: 28px;
+    margin-bottom: 24px;
+  }
+  .build__narrative{
+    font-size: clamp(20px, 1.7vw, 22px);
+    line-height: 1.5;
+    max-width: 64ch;
+  }
+  .build__narrative p + p{ margin-top: 18px; }
+  .loom{
+    margin-top: 48px;
+    aspect-ratio: 16/9; width: 100%;
+    background: var(--oat-500);
+    border-radius: var(--radius-2xl);
+    display:grid; place-items: center;
+    color: var(--oat-100);
+    background-image:
+      radial-gradient(circle at 30% 30%, rgba(255,119,20,.18), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255,119,20,.10), transparent 60%);
+    position: relative; overflow: hidden;
+  }
+  .loom__play{
+    width: 96px; height: 96px; border-radius: 999px;
+    background: var(--tangerine); color: var(--tangerine-ink);
+    display:grid; place-items:center; font-size: 36px;
+  }
+  .loom__cap{
+    position:absolute; left: 24px; bottom: 24px;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing:.08em;
+    text-transform: uppercase; opacity: .7;
+  }
+
+  .spec{
+    margin-top: 56px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-2xl);
+    background: var(--oat-100);
+    overflow: hidden;
+  }
+  .spec__head{
+    padding: 20px 28px; border-bottom: 1px solid var(--rule);
+    display:flex; align-items:center; gap: 12px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400);
+  }
+  .spec__head .dot{ width: 8px; height: 8px; border-radius:999px; background: var(--tangerine); }
+  .spec__rows > div{
+    display: grid; grid-template-columns: 200px 1fr;
+    padding: 24px 28px; gap: 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .spec__rows > div:last-child{ border-bottom: 0; }
+  @media (max-width: 720px){
+    .spec__rows > div{ grid-template-columns: 1fr; gap: 8px; padding: 20px 22px; }
+  }
+  .spec__k{
+    font-family: var(--font-mono); font-size: 12px; font-weight:500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400);
+    line-height: 1.6;
+  }
+  .spec__v{ font-size: 17px; line-height: 1.5; }
+  .chips{ display:flex; flex-wrap: wrap; gap: 8px; }
+  .chip{
+    display:inline-flex; align-items:center; gap: 8px;
+    padding: 8px 14px;
+    background: var(--oat-200); border-radius: 999px;
+    font-family: var(--font-mono); font-size: 13px; font-weight:500;
+  }
+  .chip img{ width: 16px; height: 16px; }
+
+  /* ── approver block ─────────────────────────────────────── */
+  .approver{
+    background: var(--oat-500); color: var(--oat-100);
+    border-radius: var(--radius-2xl);
+    padding: clamp(48px, 6vw, 96px);
+    margin: 0 var(--gutter);
+    max-width: calc(var(--col-max) - 2*var(--gutter));
+    margin-left: auto; margin-right: auto;
+    position: relative; overflow: hidden;
+  }
+  .approver-section{ padding: clamp(48px, 6vw, 96px) 0; }
+  .approver__inner{
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: start;
+    position: relative; z-index: 2;
+  }
+  @media (max-width: 880px){ .approver__inner{ grid-template-columns: 1fr; } }
+  .approver .eyebrow{ color: var(--tangerine); }
+  .approver h2{ color: var(--oat-100); }
+  .approver h2::after{ content: '.'; color: var(--tangerine); }
+  .approver__body{ font-size: 18px; line-height: 1.55; margin-top: 28px; max-width: 56ch; opacity: .85; }
+  .approver__cta{ margin-top: 36px; }
+
+  .approver-card{
+    background: var(--oat-100); color: var(--oat-500);
+    border-radius: 16px;
+    padding: 28px;
+    font-family: var(--font-mono);
+    box-shadow: var(--shadow-md);
+  }
+  .approver-card__from{
+    font-size: 12px; color: var(--oat-400); letter-spacing: .08em; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .approver-card__subj{
+    font-family: var(--font-display); font-weight:500;
+    font-size: 22px; line-height: 1.2; letter-spacing: -.02em;
+    margin-bottom: 18px;
+  }
+  .approver-card__body{
+    font-size: 14px; line-height: 1.55; color: var(--oat-500);
+    border-top: 1px dashed var(--rule); padding-top: 18px;
+  }
+  .approver-card__to{
+    margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--rule);
+    font-size: 12px; letter-spacing: .04em; color: var(--oat-400);
+    display:flex; justify-content: space-between; align-items:center; gap:12px;
+  }
+  .approver-card__to b{ color: var(--oat-500); font-weight: 600; }
+
+  /* ── cohort cta ─────────────────────────────────────────── */
+  .cohort{
+    background: var(--lime-200);
+    border-radius: var(--radius-2xl);
+    padding: clamp(48px, 6vw, 96px);
+    max-width: calc(var(--col-max) - 2*var(--gutter));
+    margin: clamp(40px, 5vw, 64px) auto 0;
+    position: relative; overflow: hidden;
+  }
+  .cohort__inner{
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 64px);
+    align-items: end;
+    position: relative; z-index: 2;
+  }
+  @media (max-width: 880px){ .cohort__inner{ grid-template-columns: 1fr; } }
+  .cohort .eyebrow{ color: var(--lime-500); }
+  .cohort h2{ color: var(--lime-500); margin-top: 12px; }
+  .cohort__body{ font-size: 18px; line-height: 1.5; margin-top: 24px; color: var(--lime-500); max-width: 50ch; }
+  .cohort__icon{
+    width: clamp(140px, 18vw, 220px);
+    justify-self: end;
+    transform: rotate(8deg);
+  }
+  @media (max-width: 880px){ .cohort__icon{ justify-self: start; } }
+  .cohort__cta{ margin-top: 32px; }
+
+  /* ── reflection ─────────────────────────────────────────── */
+  .reflection .reflection__col{ max-width: 64ch; }
+  .reflection p{ font-size: 18px; line-height: 1.65; }
+  .reflection p + p{ margin-top: 16px; }
+
+  /* ── what this required ─────────────────────────────────── */
+  .required__lede{
+    font-size: clamp(20px, 1.7vw, 22px); line-height: 1.5;
+    max-width: 60ch;
+  }
+  .required__sub{
+    margin-top: clamp(48px, 5vw, 72px);
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: clamp(24px, 3vw, 40px);
+  }
+  @media (max-width: 880px){ .required__sub{ grid-template-columns: 1fr; } }
+  .required__card{
+    background: var(--oat-200); border-radius: var(--radius-2xl);
+    padding: 32px; display:flex; flex-direction: column; gap: 18px;
+  }
+  .required__icon-wrap{
+    width: 64px; height: 64px; border-radius: var(--radius-xl);
+    background: var(--oat-100); display:grid; place-items:center;
+  }
+  .required__icon-wrap img{ width: 40px; height: 40px; }
+  .required__step-num{
+    font-family: var(--font-mono); font-size: 12px; font-weight:500;
+    letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400);
+  }
+  .required__what{
+    font-family: var(--font-mono); font-size: 13px;
+    background: var(--oat-100); padding: 12px 16px; border-radius: 8px;
+    line-height: 1.5;
+  }
+  .required__what b{
+    display:block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--oat-400); margin-bottom: 6px; font-weight: 500;
+  }
+  .required__bullets{ list-style:none; padding:0; margin: 4px 0 0; display:flex; flex-direction:column; gap: 10px; }
+  .required__bullets li{
+    font-size: 14px; line-height: 1.45; padding-left: 22px; position: relative;
+    color: var(--oat-500);
+  }
+  .required__bullets li::before{
+    content: ''; position:absolute; left:0; top:7px; width: 12px; height: 12px;
+    border-radius: 999px; background: var(--tangerine);
+  }
+  .required__rubric{
+    margin-top: clamp(48px, 5vw, 72px);
+    padding: 28px 32px;
+    border: 1px dashed var(--rule);
+    border-radius: var(--radius-lg);
+    font-style: italic; color: var(--oat-400);
+    font-size: 16px; line-height: 1.55;
+    max-width: 60ch;
+  }
+
+  /* ── verifiable ─────────────────────────────────────────── */
+  .verifiable{
+    background: var(--oat-200);
+    border-radius: var(--radius-2xl);
+    padding: clamp(48px, 6vw, 96px);
+    max-width: calc(var(--col-max) - 2*var(--gutter));
+    margin: 0 auto;
+  }
+  .verifiable__head{ display:flex; align-items:center; gap: 24px; }
+  .verifiable__head img{ width: 80px; height:80px; }
+  .verifiable h2{ font-size: clamp(32px, 3.6vw, 56px); margin: 0; }
+  .verifiable__meta{
+    margin-top: 32px;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 16px 32px;
+    border-top: 1px solid var(--rule); padding-top: 32px;
+    font-family: var(--font-mono); font-size: 13px;
+  }
+  @media (max-width: 720px){ .verifiable__meta{ grid-template-columns: 1fr; } }
+  .verifiable__meta dt{
+    color: var(--oat-400); text-transform: uppercase; letter-spacing: .08em;
+    font-weight: 500;
+  }
+  .verifiable__meta dd{ margin: 6px 0 0; color: var(--oat-500); font-weight: 500; }
+  .verifiable__cta{ margin-top: 40px; display:flex; flex-wrap: wrap; gap: 12px; }
+
+  /* ── closing ────────────────────────────────────────────── */
+  .closing{
+    text-align: center;
+    padding: clamp(80px, 10vw, 160px) var(--gutter);
+  }
+  .closing h2{
+    font-size: clamp(48px, 7vw, 112px); line-height: .96; letter-spacing: -.04em;
+    margin: 0 auto; max-width: 14ch;
+  }
+  .closing__sub{ margin-top: 24px; font-size: 18px; color: var(--oat-400); }
+  .closing__cta{ margin-top: 40px; }
+
+  /* ── footer ─────────────────────────────────────────────── */
+  footer{
+    background: var(--oat-500); color: var(--oat-200);
+    padding: clamp(48px, 5vw, 80px) var(--gutter);
+  }
+  .foot__inner{
+    max-width: var(--col-max); margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 32px;
+    align-items: end;
+  }
+  @media (max-width: 720px){ .foot__inner{ grid-template-columns: 1fr; align-items: start; } }
+  .foot__brand img{ height: 32px; }
+  .foot__copy{ margin-top: 18px; font-size: 13px; color: var(--oat-300); max-width: 56ch; }
+  .foot__links{
+    display: flex; flex-wrap: wrap; gap: 24px;
+    font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+    letter-spacing: .06em; text-transform: uppercase;
+  }
+  .foot__links a{ color: var(--oat-200); text-decoration: none; border-bottom: 1px solid transparent; padding-bottom: 2px; }
+  .foot__links a:hover{ border-bottom-color: var(--tangerine); }
+  .foot__support{
+    margin-top: 24px; font-family: var(--font-mono); font-size: 13px; color: var(--oat-300);
+  }
+
+  /* phosphor lite */
+  .ph{ font-family: 'Phosphor', sans-serif; font-style: normal; }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css" />
+</head>
+<body>
+
+<!-- ════════════════════ HEADER ════════════════════ -->
+<header class="site-head" data-screen-label="Header">
+  <div class="site-head__inner" style="display:grid; grid-template-columns: auto 1fr auto; gap: 24px;">
+    <a class="brand" href="home.html" aria-label="Clay home">
+      <img class="brand__logo" src="assets/logo/Clay_Logo_Mono_Wht.png" alt="Clay" />
+      <span class="brand__sep" aria-hidden="true"></span>
+      <span class="brand__crumb">AI GTM Workshop</span>
+    </a>
+    <nav aria-label="Workshop journey" style="justify-self:center; display:flex; gap:4px; background: rgba(254,253,251,.08); border-radius:999px; padding:4px;">
+      <a href="home.html" style="display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; font-family:var(--font-mono); font-size:12px; font-weight:500; letter-spacing:.04em; color:var(--oat-300); text-decoration:none;"><span style="opacity:.6;font-size:10px;">00</span><span>Home</span></a>
+      <a href="welcome.html" style="display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; font-family:var(--font-mono); font-size:12px; font-weight:500; letter-spacing:.04em; color:var(--oat-300); text-decoration:none;"><span style="opacity:.6;font-size:10px;">01</span><span>For You</span></a>
+      <a href="post-workshop.html" style="display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; font-family:var(--font-mono); font-size:12px; font-weight:500; letter-spacing:.04em; color:var(--oat-500); text-decoration:none; background:var(--oat-100);"><span style="opacity:.6;font-size:10px;">02</span><span>Post-workshop</span></a>
+    </nav>
+    <div class="head-actions">
+      <button class="btn btn--cream-on-dark" type="button" onclick="copyUrl(this)"><i class="ph ph-link"></i><span>Share</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<section class="hero" data-screen-label="01 Hero">
+  <div class="hero__inner">
+    <div class="hero__main">
+      <span class="pill"><span class="dot"></span>Clay · AI GTM Workshop graduate</span>
+      <h1>
+        <span class="name" data-field="full_name">Maya Okonkwo</span>
+        <span class="built">built a CRM enrichment loop in 4 hours.</span>
+      </h1>
+      <p class="hero__sub" data-field="what_you_loved">
+        Pseudocoded the workflow before walking in. Shipped it live in 4 hours. By Friday it was running on 2,400 HubSpot accounts at Linear.
+      </p>
+      <hr class="hero__rule" />
+      <div class="hero__meta">
+        <div class="hero__meta-eyebrow">Workshop graduate</div>
+        <div class="hero__meta-name" data-field="full_name">Maya Okonkwo</div>
+        <div class="hero__meta-bits"><span data-field="role_at_company">Senior GTM Operations Manager at Linear</span></div>
+        <a class="hero__meta-link" href="#" data-field="linkedin_profile" data-field-attr="href">Connect on LinkedIn <i class="ph ph-arrow-up-right"></i></a>
+        <p class="hero__case">
+          <b>Case study:</b> What 200 enriched ICP accounts and a single Slack DM did to Linear's pipeline.
+        </p>
+      </div>
+    </div>
+
+    <!-- circular seal -->
+    <div class="hero__seal" aria-hidden="true">
+      <div class="hero__seal-text">
+        <svg viewBox="0 0 200 200" width="100%" height="100%">
+          <defs>
+            <path id="circ" d="M 100,100 m -86,0 a 86,86 0 1,1 172,0 a 86,86 0 1,1 -172,0" />
+          </defs>
+          <text font-family="Roobert SemiMono, monospace" font-size="13" font-weight="500"
+                letter-spacing="3" fill="#381005" text-transform="uppercase">
+            <textPath href="#circ" startOffset="0">
+              CLAY · AI GTM WORKSHOP · CLEARED FOR LAUNCH · CLAY · AI GTM WORKSHOP · CLEARED FOR LAUNCH ·
+            </textPath>
+          </text>
+        </svg>
+      </div>
+      <div class="hero__seal-circle">
+        <img src="assets/icons/Trophy.png" alt="Trophy" />
+      </div>
+    </div>
+  </div>
+
+  <img class="hero__flower" src="assets/tiles/Tile-stack_07.png" alt="" aria-hidden="true" />
+</section>
+
+<!-- ════════════════════ TICKER ════════════════════ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- ════════════════════ MEET ════════════════════ -->
+<section class="meet" data-screen-label="02 Meet">
+  <div class="wrap grid-2">
+    <div>
+      <img class="tile-deco" src="assets/tiles/Tile-stack_03.png" alt="" />
+    </div>
+    <div>
+      <div class="eyebrow">About the graduate</div>
+      <h2 class="with-period">Meet <span data-field="first_name">Maya</span></h2>
+      <p class="lede">
+        Eight years running GTM ops — first at Asana, now at Linear. She came in with a theory ("we're leaving money on the table inside our existing CRM") and a 14-tab Chrome window. She walked out with one Clay table that does the job of nine of them.
+      </p>
+      <blockquote class="meet__quote">
+        “I've spent two years trying to get our enrichment stack to talk to itself. In four hours I built the version I actually want — and I'm not the engineer in the room.”
+      </blockquote>
+      <div class="meet__attr">
+        <div class="meet__attr-name" data-field="full_name">Maya Okonkwo</div>
+        <div class="meet__attr-role"><span data-field="job_title">Senior GTM Operations Manager</span> · <span data-field="company_name">Linear</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ OUTCOMES ════════════════════ -->
+<section class="outcomes" data-screen-label="03 Outcomes">
+  <div class="wrap">
+    <div class="outcomes__head">
+      <div class="outcomes__title">
+        <img src="assets/icons/Trophy.png" alt="" />
+        <div>
+          <div class="eyebrow">What this work moved</div>
+          <h2 class="with-period" style="margin-top:14px"><span data-field="first_name">Maya</span>'s outcomes</h2>
+        </div>
+      </div>
+      <dl class="verify-card">
+        <dt>Verified</dt><dd>20 May 2026</dd>
+        <dt>Program</dt><dd>AI GTM Workshop</dd>
+        <dt>Graduate ID</dt><dd data-field="graduate_id">WG-3F8D17C2</dd>
+        <dt>Cohort size</dt><dd><span data-field="cohort_size">22</span> graduates</dd>
+      </dl>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat__num">+4 <small>pts</small></div>
+        <div class="stat__label">Self-rated Clay skill, before → after the workshop. <b>5 → 9 / 10</b>.</div>
+        <div class="stat__source">NPS Survey</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num">10<small>/10</small></div>
+        <div class="stat__label">Likelihood to recommend the workshop to a peer in GTM ops.</div>
+        <div class="stat__source">NPS Survey</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num" style="font-size: clamp(28px, 3.4vw, 56px); line-height: 1.05;">
+          CRM enrichment loop
+        </div>
+        <div class="stat__label">Workflow shipped live during the 4-hour build session.</div>
+        <div class="stat__source">Live build · <a href="#" style="color:var(--tangerine-400); text-decoration: underline;">Loom ↗</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ THE BUILD ════════════════════ -->
+<section class="build" data-screen-label="04 The build">
+  <div class="wrap grid-2">
+    <div>
+      <span class="check-marker"><i class="ph-bold ph-check"></i></span>
+      <div class="eyebrow">The build · Real-world workflow</div>
+      <h2 style="margin-top:14px">CRM enrichment loop</h2>
+    </div>
+    <div>
+      <div class="build__narrative">
+        <p>
+          Maya came in with 2,400 stale HubSpot accounts — companies that signed up, never converted, and went silent. Sales had written them off; she suspected the data had.
+        </p>
+        <p>
+          She built one Clay table. Inputs: the dead-account list. Each row gets refreshed firmographics from a 3-source waterfall (Clearbit, ZoomInfo, Apollo), funding signals from the last 90 days, and a Claygent column scoring fit against Linear's ICP. Anything scoring 7+ writes back to HubSpot with a fresh "warm" tag and drops a Slack ping into <code>#gtm-revival</code>.
+        </p>
+        <p>
+          Two days after demo day it found 47 accounts that had quietly raised Series B in Q1. Three were already in Linear's funnel under the wrong owner.
+        </p>
+      </div>
+
+      <div class="loom" role="img" aria-label="Loom recording placeholder of Maya's workshop build">
+        <div class="loom__play"><i class="ph-bold ph-play"></i></div>
+        <div class="loom__cap">Loom · Maya's live build · 4 min 12 s</div>
+      </div>
+
+      <div class="spec">
+        <div class="spec__head">
+          <span class="dot"></span>
+          <span>Workflow spec</span>
+        </div>
+        <div class="spec__rows">
+          <div>
+            <div class="spec__k">Inputs</div>
+            <div class="spec__v">2,400 dormant HubSpot accounts (CSV export from "Closed-Lost · 2024" view) plus a Salesforce ICP definition pasted as a Notion link.</div>
+          </div>
+          <div>
+            <div class="spec__k">Outputs</div>
+            <div class="spec__v">Refreshed firmographics, recent funding events, ICP-fit score (0–10), Claygent's plain-English reasoning per row.</div>
+          </div>
+          <div>
+            <div class="spec__k">Target system</div>
+            <div class="spec__v">HubSpot (write-back via native integration), Slack <code>#gtm-revival</code> (digest message), CSV download for the SDR team.</div>
+          </div>
+          <div>
+            <div class="spec__k">Tools used</div>
+            <div class="spec__v">
+              <div class="chips">
+                <span class="chip"><img src="assets/icons/Find-Companies.png" alt=""/>Clearbit</span>
+                <span class="chip"><img src="assets/icons/Find-People.png" alt=""/>ZoomInfo</span>
+                <span class="chip"><img src="assets/icons/Target.png" alt=""/>Apollo</span>
+                <span class="chip"><img src="assets/icons/Tornado.png" alt=""/>Claygent</span>
+                <span class="chip"><img src="assets/icons/Update-CRM.png" alt=""/>HubSpot</span>
+                <span class="chip"><img src="assets/icons/Slack.png" alt=""/>Slack</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ APPROVER ════════════════════ -->
+<section class="approver-section" data-screen-label="05 Approver">
+  <div class="approver">
+    <div class="approver__inner">
+      <div>
+        <div class="eyebrow">Multi-thread</div>
+        <h2 class="with-period">Sarah Chen needs to see this</h2>
+        <p class="approver__body">
+          Sarah Chen — VP Marketing at Linear — needs to greenlight rolling this out to the full ops team. Forward this page so the conversation starts before your next 1:1, not after.
+        </p>
+        <div class="approver__cta">
+          <a class="btn btn--tangerine btn--lg"
+             href="mailto:sarah.chen@linear.app?subject=Wanted%20to%20share%20what%20I%20built%20last%20week&body=Hey%20Sarah%20%E2%80%94%20I%20attended%20the%20Clay%20AI%20GTM%20Workshop%20and%20shipped%20a%20CRM%20enrichment%20loop%20live.%20Two%20days%20later%20it%20surfaced%2047%20dormant%20accounts%20worth%20revisiting.%20Page%20with%20the%20full%20build%3A%20%5BURL%5D">
+            <i class="ph-bold ph-paper-plane-tilt"></i>
+            <span>Forward this page</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="approver-card" aria-hidden="true">
+        <div class="approver-card__from">FROM: <span data-field="work_email">maya@linear.app</span></div>
+        <div class="approver-card__subj">Wanted to share what I built last week</div>
+        <div class="approver-card__body">
+          Hey — I attended the Clay AI GTM Workshop and shipped a CRM enrichment loop live. Two days later it surfaced 47 dormant accounts worth revisiting. Full build here: clay.com/workshop/maya-okonkwo
+        </div>
+        <div class="approver-card__to">
+          <span>TO: <b data-field="greenlight_approver">Sarah Chen — VP Marketing</b></span>
+          <span data-field="company_name">Linear</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ COHORT CTA ════════════════════ -->
+<section style="padding: 0 var(--gutter) clamp(72px,8vw,128px); background: var(--oat-100);">
+  <div class="cohort">
+    <div class="cohort__inner">
+      <div>
+        <div class="eyebrow">What's next</div>
+        <h2 class="with-period">Workshop sparked something? Keep building</h2>
+        <p class="cohort__body">
+          Clay cohorts are longer-form, deeper, and structured around the workflows you actually want in production. The workshop graduates who go to cohort are the ones who turn one good build into ten.
+        </p>
+        <div class="cohort__cta">
+          <a class="btn btn--ink btn--lg" href="https://university.clay.com/cohorts">
+            <i class="ph-bold ph-arrow-right"></i>
+            <span>Join a Clay cohort</span>
+          </a>
+        </div>
+      </div>
+      <img class="cohort__icon" src="assets/icons/University.png" alt="" />
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ REFLECTION ════════════════════ -->
+<section class="reflection" data-screen-label="06 Reflection">
+  <div class="wrap grid-2">
+    <div>
+      <div class="eyebrow">In <span data-field="first_name">Maya</span>'s words</div>
+      <h2 class="with-period" style="margin-top:14px">What landed</h2>
+    </div>
+    <div class="reflection__col">
+      <p>
+        The pseudocoding sub-step was the unlock. I sat down Tuesday night thinking I'd just describe a vague workflow and Chris would translate. Writing out the inputs, outputs and target system in five sentences — that was the whole engineering job, and I'd been avoiding it for months.
+      </p>
+      <p>
+        By the time I got to the workshop, half the table was already pre-built. I spent the four hours actually tuning the Claygent prompt and arguing with the SDR lead about the score threshold. It's the only "training" I've done in five years that ended with a thing in production.
+      </p>
+      <p>
+        The thing that surprised me: I left wanting to go deeper, not declaring victory. Cohort 2 starts in July. I'm in.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ WHAT THIS REQUIRED ════════════════════ -->
+<section style="background: var(--oat-200);" data-screen-label="07 What it required">
+  <div class="wrap">
+    <div class="grid-2" style="align-items:end;">
+      <div>
+        <div class="eyebrow">What this workshop required</div>
+        <h2 class="with-period" style="margin-top:14px">Pre-flight, then liftoff</h2>
+      </div>
+      <p class="required__lede">
+        The Clay AI GTM Workshop is a half-day intensive — a four-hour live build, IRL or virtual, with Clay engineers in the room. Three pre-flight checks gate the seat — about fifteen minutes of work in total. The workshop itself is graded on what gets shipped.
+      </p>
+    </div>
+
+    <div class="required__sub">
+      <div class="required__card">
+        <div class="required__step-num">Step 01 · Optional</div>
+        <div class="required__icon-wrap"><img src="assets/icons/Power.png" alt="" /></div>
+        <h3>Fuel up</h3>
+        <div class="required__what">
+          <b>What <span data-field="first_name">Maya</span> did</b>
+          Watched the Intro to Clay crash course (~3 min).
+        </div>
+        <ul class="required__bullets">
+          <li>One short video. Tables, sources, enrichments, AI columns — the vocabulary the room will use all day.</li>
+          <li>Optional, but every graduate who's skipped it has regretted it by lunch.</li>
+          <li>Sets the floor so we can spend the four hours building, not defining terms.</li>
+        </ul>
+      </div>
+
+      <div class="required__card">
+        <div class="required__step-num">Step 02 · Required</div>
+        <div class="required__icon-wrap"><img src="assets/icons/Hammer.png" alt="" /></div>
+        <h3>Brainstorming</h3>
+        <div class="required__what">
+          <b>What <span data-field="first_name">Maya</span> did</b>
+          Answered all 5 prompts. Showed up with the workflow already half-thought-through.
+        </div>
+        <ul class="required__bullets">
+          <li>Operator role and ICP — who you sell to, in one line.</li>
+          <li>The workflow you want to build, in plain English.</li>
+          <li>Current stack and where Clay has to plug in (Salesforce → HubSpot + Slack, in Maya's case).</li>
+          <li>The biggest pain — the thing that'll still hurt on Monday if we don't fix it.</li>
+        </ul>
+      </div>
+
+      <div class="required__card">
+        <div class="required__step-num">Step 03 · Required</div>
+        <div class="required__icon-wrap"><img src="assets/icons/Slack.png" alt="" /></div>
+        <h3>Comms check</h3>
+        <div class="required__what">
+          <b>What <span data-field="first_name">Maya</span> did</b>
+          Posted in <code>#clay-workshops</code>, auto-drafted from her brainstorming answers. 11 reactions before workshop day.
+        </div>
+        <ul class="required__bullets">
+          <li>Public-by-default. The community sees what you're building before you walk in.</li>
+          <li>The post writes itself from Step 02 — role, ICP, workflow, stack, pain.</li>
+          <li>The reactions become the room you walk into on workshop day.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="required__rubric">
+      Three checks. About fifteen minutes. Workshops are graded on what gets shipped, not what gets attempted — and the pre-flight is the thing that makes shipping in four hours possible.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ TICKER (REPEAT) ════════════════════ -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+    <span>CLAY <span class="dot"></span> AI GTM WORKSHOP <span class="dot"></span> SHIP FAST <span class="dot"></span></span>
+  </div>
+</div>
+
+<!-- ════════════════════ VERIFIABLE ════════════════════ -->
+<section id="share" data-screen-label="08 Verifiable">
+  <div class="verifiable">
+    <div class="verifiable__head">
+      <img src="assets/icons/Medal.png" alt="" />
+      <div>
+        <div class="eyebrow">Verifiable graduate</div>
+        <h2 class="with-period" style="margin-top:8px">This is a real, verifiable workshop graduate</h2>
+      </div>
+    </div>
+    <dl class="verifiable__meta">
+      <div><dt>Graduate</dt><dd data-field="full_name">Maya Okonkwo</dd></div>
+      <div><dt>Graduate ID</dt><dd data-field="graduate_id">WG-3F8D17C2</dd></div>
+      <div><dt>Workflow shipped</dt><dd>CRM enrichment loop · Loom available</dd></div>
+      <div><dt>NPS</dt><dd><span data-field="nps_recommend">10</span> / 10</dd></div>
+    </dl>
+    <div class="verifiable__cta">
+      <a class="btn btn--ink btn--lg" href="#">
+        <i class="ph ph-linkedin-logo"></i>
+        <span>Share on LinkedIn</span>
+      </a>
+      <a class="btn btn--ghost btn--lg" href="#">
+        <i class="ph ph-shield-check"></i>
+        <span>Verify graduate</span>
+      </a>
+      <button class="btn btn--ghost btn--lg" type="button" onclick="copyUrl(this)">
+        <i class="ph ph-link"></i>
+        <span>Copy URL</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ CLOSING ════════════════════ -->
+<section class="closing" data-screen-label="09 Closing">
+  <div class="eyebrow">Want this for your team?</div>
+  <h2 class="with-period" style="margin-top:18px">Wheels up. Then you</h2>
+  <p class="closing__sub">Applications are open for the next workshop · 22 seats.</p>
+  <div class="closing__cta">
+    <a class="btn btn--tangerine btn--lg" href="#">
+      <i class="ph-bold ph-rocket-launch"></i>
+      <span>Apply for the next workshop</span>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer data-screen-label="Footer">
+  <div class="foot__inner">
+    <div class="foot__brand">
+      <img src="assets/logo/Clay_Logo_Mono_Wht.png" alt="Clay" />
+      <p class="foot__copy">
+        Clay is a spreadsheet-shaped data platform for GTM teams. The AI GTM Workshop is a half-day intensive — a four-hour live build, IRL or virtual — bringing together GTM operators who ship.
+      </p>
+    </div>
+    <nav class="foot__links" aria-label="Program links">
+      <a href="#">Next workshop ↗</a>
+      <a href="#">Clay University ↗</a>
+      <a href="#">Clay Slack community ↗</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  function copyUrl(btn){
+    const url = window.location.href;
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url);
+    }
+    const span = btn.querySelector('span');
+    if (!span) return;
+    const orig = span.textContent;
+    span.textContent = 'Copied';
+    setTimeout(()=>{ span.textContent = orig; }, 1400);
+  }
+</script>
+<script>window.addEventListener('DOMContentLoaded', () => window.applyData && applyData());</script>
+</body>
+</html>

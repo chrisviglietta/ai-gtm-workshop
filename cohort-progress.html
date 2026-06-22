@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cohort progress · NYC · 18 May 2026 · Clay AI GTM Workshop</title>
+<link rel="stylesheet" href="assets/colors_and_type.css" />
+<link rel="icon" href="assets/logo/Clay_Logo_Icon.png" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css" />
+<style>
+  :root{
+    --gutter: clamp(20px, 4vw, 48px);
+    --rule: rgba(27,26,24,.10);
+    --rule-strong: rgba(27,26,24,.16);
+    --tangerine: var(--tangerine-300);
+    --tangerine-ink: var(--tangerine-400);
+  }
+  *{ box-sizing: border-box; }
+  body{ margin:0; background: var(--oat-100); color: var(--oat-500); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+
+  /* ── header ──────────────────────────────────────────────── */
+  .site-head{
+    position: sticky; top:0; z-index:50;
+    background: rgba(254,253,251,.86); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .site-head__inner{
+    padding: 14px var(--gutter);
+    display:grid; grid-template-columns: auto 1fr auto; gap: 24px;
+    align-items: center;
+  }
+  .brand{ display:flex; align-items:center; gap:14px; min-width:0; text-decoration:none; color: inherit; }
+  .brand img{ height: 28px; }
+  .brand__sep{ width:1px; height:20px; background: var(--rule-strong); }
+  .brand__crumb{ font-family: var(--font-mono); font-size: 12px; font-weight:500; letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400); white-space: nowrap; }
+  .brand__crumb b{ color: var(--oat-500); font-weight:500; }
+  .head-context{
+    justify-self: center;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em;
+    color: var(--oat-400);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .head-context b{ color: var(--oat-500); font-weight: 500; }
+  .head-context .badge{
+    background: var(--lime-200); color: var(--lime-500);
+    padding: 4px 10px; border-radius: 999px; font-weight: 500;
+  }
+  .btn{ display:inline-flex; align-items:center; gap: 8px; height: 38px; padding: 0 16px; border-radius: 999px; font-family: var(--font-body); font-weight: 500; font-size: 13px; cursor: pointer; border: 1px solid transparent; text-decoration: none; transition: background-color .12s, color .12s, border-color .12s; white-space: nowrap; color: inherit; }
+  .btn--ghost{ background: transparent; border-color: var(--rule-strong); color: var(--oat-500); }
+  .btn--ghost:hover{ background: var(--oat-200); }
+  .btn--ink{ background: var(--oat-500); color: var(--oat-100); }
+  .btn--ink:hover{ background: #000; }
+
+  /* ── page intro ──────────────────────────────────────────── */
+  .intro{ padding: clamp(40px, 5vw, 64px) var(--gutter) clamp(24px, 3vw, 32px); border-bottom: 1px solid var(--rule); }
+  .intro__inner{ max-width: 1240px; margin: 0 auto; }
+  .eyebrow{ font-family: var(--font-mono); font-weight: 500; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400); }
+  .intro h1{
+    font-family: var(--font-display); font-weight: 575;
+    font-size: clamp(36px, 4.4vw, 64px); line-height: 1; letter-spacing: -.03em;
+    margin: 12px 0 0; text-wrap: balance;
+    font-feature-settings: "ss01" on, "ss10" on, "ss11" on;
+  }
+  .intro h1 b{ color: var(--tangerine); font-weight: 575; }
+  .intro__sub{ margin-top: 14px; color: var(--oat-400); font-size: 15px; line-height: 1.5; max-width: 60ch; }
+
+  /* ── stat strip ──────────────────────────────────────────── */
+  .stats{ padding: 0 var(--gutter); }
+  .stats__inner{ max-width: 1240px; margin: 28px auto 0; display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  @media (max-width: 900px){ .stats__inner{ grid-template-columns: repeat(2, 1fr); } }
+  .stat{ padding: 22px 24px; border-right: 1px solid var(--rule); }
+  .stat:last-child{ border-right: 0; }
+  @media (max-width: 900px){
+    .stat{ border-bottom: 1px solid var(--rule); }
+    .stat:nth-last-child(-n+2){ border-bottom: 0; }
+    .stat:nth-child(2n){ border-right: 0; }
+  }
+  .stat__k{ font-family: var(--font-mono); font-size: 11px; font-weight:500; letter-spacing: .08em; text-transform: uppercase; color: var(--oat-400); }
+  .stat__v{ margin-top: 6px; font-family: var(--font-display); font-weight: 500; font-size: 32px; line-height: 1; letter-spacing: -.02em; }
+  .stat__v--tangerine{ color: var(--tangerine); }
+  .stat__v--lime{ color: var(--lime-400); }
+  .stat__v--pom{ color: var(--pom-400); }
+  .stat__sub{ margin-top: 6px; font-size: 12px; color: var(--oat-400); }
+
+  /* ── filter bar ──────────────────────────────────────────── */
+  .toolbar{
+    max-width: 1240px; margin: 28px auto 0; padding: 0 var(--gutter);
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .chips{ display: inline-flex; gap: 6px; background: var(--oat-200); padding: 4px; border-radius: 999px; }
+  .chip{
+    height: 32px; padding: 0 14px; border-radius: 999px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500; letter-spacing: .04em;
+    background: transparent; border: 0; cursor: pointer; color: var(--oat-400);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .chip[aria-pressed="true"]{ background: var(--oat-100); color: var(--oat-500); box-shadow: 0 1px 2px rgba(27,26,24,.06); }
+  .chip__count{ background: var(--oat-300); color: var(--oat-500); padding: 1px 7px; border-radius: 999px; font-size: 11px; }
+  .chip[aria-pressed="true"] .chip__count{ background: var(--oat-200); }
+  .chip--alert .chip__count{ background: var(--pom-200); color: var(--pom-400); }
+
+  .search{
+    flex: 1; min-width: 240px; max-width: 320px;
+    height: 40px; background: var(--oat-200); border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 8px; padding: 0 16px;
+    border: 1px solid transparent; transition: border-color .12s, background-color .12s;
+  }
+  .search:focus-within{ background: var(--oat-100); border-color: var(--rule-strong); }
+  .search input{ flex: 1; min-width: 0; border: 0; background: transparent; outline: 0; font: inherit; font-size: 14px; color: var(--oat-500); }
+  .search i{ color: var(--oat-400); }
+
+  /* ── table ───────────────────────────────────────────────── */
+  .tablewrap{ max-width: 1240px; margin: 16px auto 0; padding: 0 var(--gutter) clamp(48px, 5vw, 80px); }
+  .table{
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    font-size: 14px;
+  }
+  .table thead th{
+    text-align: left; padding: 12px 14px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--oat-400);
+    border-bottom: 1px solid var(--rule);
+    background: var(--oat-100);
+    position: sticky; top: 60px; z-index: 1;
+  }
+  .table tbody tr{
+    cursor: pointer; transition: background-color .12s;
+  }
+  .table tbody tr:hover{ background: var(--oat-200); }
+  .table tbody td{
+    padding: 14px; border-bottom: 1px solid var(--rule);
+    vertical-align: middle;
+  }
+  .table tbody tr.is-flagged td{ background: rgba(252,186,190,.18); }
+  .table tbody tr.is-flagged:hover td{ background: rgba(252,186,190,.28); }
+  .table tbody tr.is-complete td{ background: rgba(238,247,115,.10); }
+  .table tbody tr.is-complete:hover td{ background: rgba(238,247,115,.20); }
+
+  .gradcell{ display: flex; align-items: center; gap: 12px; }
+  .avatar{
+    width: 32px; height: 32px; flex: 0 0 auto;
+    border-radius: 50%; background: var(--oat-300); color: var(--oat-500);
+    display: grid; place-items: center;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 500;
+    text-transform: uppercase;
+  }
+  .avatar--t{ background: var(--tangerine-200); color: var(--tangerine-400); }
+  .avatar--l{ background: var(--lime-200); color: var(--lime-400); }
+  .avatar--u{ background: var(--ube-200); color: var(--ube-400); }
+  .avatar--b{ background: var(--blueberry-200); color: var(--blueberry-400); }
+  .avatar--s{ background: var(--slushie-200); color: var(--slushie-400); }
+  .avatar--d{ background: var(--dragon-200); color: var(--dragon-400); }
+
+  .gradcell__main{ font-weight: 500; color: var(--oat-500); }
+  .gradcell__sub{ font-size: 12px; color: var(--oat-400); margin-top: 2px; }
+
+  /* check-cell */
+  .check{
+    width: 22px; height: 22px;
+    border-radius: 50%; display: inline-grid; place-items: center;
+    background: var(--oat-200); color: var(--oat-300);
+  }
+  .check.is-done{ background: var(--lime-300); color: var(--lime-500); }
+  .check.is-pending{ background: var(--oat-200); color: var(--oat-400); }
+  .check.is-late{ background: var(--pom-200); color: var(--pom-400); }
+  .check i{ font-size: 12px; font-weight: 700; }
+
+  /* status badge */
+  .status{
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  .status--complete{ background: var(--lime-200); color: var(--lime-500); }
+  .status--progress{ background: var(--oat-200); color: var(--oat-500); }
+  .status--flag{ background: var(--pom-200); color: var(--pom-400); }
+  .status--new{ background: var(--blueberry-200); color: var(--blueberry-500); }
+  .status .dot{ width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .7; }
+
+  .age{
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--oat-400); white-space: nowrap;
+  }
+  .age--late{ color: var(--pom-400); }
+
+  .row-action{
+    width: 28px; height: 28px; border-radius: 50%;
+    display: inline-grid; place-items: center;
+    color: var(--oat-400);
+  }
+  tr:hover .row-action{ color: var(--oat-500); background: var(--oat-100); }
+
+  /* ── footer note ─────────────────────────────────────────── */
+  .footnote{
+    max-width: 1240px; margin: 24px auto 0; padding: 0 var(--gutter);
+    color: var(--oat-400); font-size: 12px;
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between;
+    border-top: 1px solid var(--rule); padding-top: 18px;
+  }
+  .footnote code{ font-family: var(--font-mono); background: var(--oat-200); padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<header class="site-head" data-screen-label="Header">
+  <div class="site-head__inner">
+    <a class="brand" href="home.html">
+      <img src="assets/logo/Clay_Logo_Mono_Blk.png" alt="Clay" />
+      <span class="brand__sep" aria-hidden="true"></span>
+      <span class="brand__crumb"><b>Cohort progress</b> · internal</span>
+    </a>
+    <div class="head-context">
+      <span>NYC · 18 May 2026</span>
+      <span class="badge">22 graduates</span>
+    </div>
+    <a class="btn btn--ghost" href="#"><i class="ph ph-arrow-square-out"></i><span>Open sheet</span></a>
+  </div>
+</header>
+
+<!-- ════════════════════ INTRO ════════════════════ -->
+<section class="intro" data-screen-label="01 Intro">
+  <div class="intro__inner">
+    <div class="eyebrow">Cohort · NYC · 18 May 2026 · 11 days out</div>
+    <h1>Who's ready, <b>who needs a nudge</b>.</h1>
+    <p class="intro__sub">Live view of pre-flight completion across the cohort. Anyone past the 48-hour threshold without all three checks gets flagged. Click a row to open that graduate's pre-flight page.</p>
+  </div>
+</section>
+
+<!-- ════════════════════ STATS ════════════════════ -->
+<section class="stats" data-screen-label="02 Stats">
+  <div class="stats__inner">
+    <div class="stat">
+      <div class="stat__k">Cohort</div>
+      <div class="stat__v">22</div>
+      <div class="stat__sub">Confirmed seats</div>
+    </div>
+    <div class="stat">
+      <div class="stat__k">All 3 done</div>
+      <div class="stat__v stat__v--lime">9</div>
+      <div class="stat__sub">41% · ahead of last cohort</div>
+    </div>
+    <div class="stat">
+      <div class="stat__k">In progress</div>
+      <div class="stat__v">8</div>
+      <div class="stat__sub">1 or 2 of 3 complete</div>
+    </div>
+    <div class="stat">
+      <div class="stat__k">Needs follow-up</div>
+      <div class="stat__v stat__v--pom">5</div>
+      <div class="stat__sub">No activity in 48h+</div>
+    </div>
+    <div class="stat">
+      <div class="stat__k">Days to workshop</div>
+      <div class="stat__v stat__v--tangerine">11</div>
+      <div class="stat__sub">T-minus 264 hours</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ TOOLBAR ════════════════════ -->
+<div class="toolbar" data-screen-label="03 Filters">
+  <div class="chips" role="tablist" aria-label="Filter cohort">
+    <button class="chip" aria-pressed="true">All <span class="chip__count">22</span></button>
+    <button class="chip">Complete <span class="chip__count">9</span></button>
+    <button class="chip">In progress <span class="chip__count">8</span></button>
+    <button class="chip chip--alert">Needs follow-up <span class="chip__count">5</span></button>
+  </div>
+  <label class="search">
+    <i class="ph ph-magnifying-glass"></i>
+    <input type="search" placeholder="Search by name, company, or email" />
+  </label>
+  <a class="btn btn--ink" href="#" style="margin-left:auto;"><i class="ph-bold ph-paper-plane-tilt"></i><span>Send nudge to flagged (5)</span></a>
+</div>
+
+<!-- ════════════════════ TABLE ════════════════════ -->
+<section class="tablewrap" data-screen-label="04 Cohort table">
+  <table class="table" aria-label="Cohort pre-flight progress">
+    <thead>
+      <tr>
+        <th style="width: 26%;">Graduate</th>
+        <th style="width: 18%;">Workflow</th>
+        <th style="width: 60px; text-align: center;" title="Fuel-up">⚡</th>
+        <th style="width: 60px; text-align: center;" title="Brainstorm">🔨</th>
+        <th style="width: 60px; text-align: center;" title="Comms check">💬</th>
+        <th style="width: 14%;">Status</th>
+        <th style="width: 12%;">Last activity</th>
+        <th style="width: 36px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- ─── COMPLETE ─── -->
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--t">MO</div>
+            <div>
+              <div class="gradcell__main">Maya Okonkwo</div>
+              <div class="gradcell__sub">Senior GTM Ops · Linear</div>
+            </div>
+          </div>
+        </td>
+        <td>CRM enrichment loop</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">2h ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--u">DR</div>
+            <div>
+              <div class="gradcell__main">Devon Ramirez</div>
+              <div class="gradcell__sub">RevOps Lead · Notion</div>
+            </div>
+          </div>
+        </td>
+        <td>Outbound personalization</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">5h ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--l">AC</div>
+            <div>
+              <div class="gradcell__main">Aiden Chen</div>
+              <div class="gradcell__sub">VP Sales Ops · Vercel</div>
+            </div>
+          </div>
+        </td>
+        <td>Pipeline hygiene</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">8h ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--b">SP</div>
+            <div>
+              <div class="gradcell__main">Sofia Park</div>
+              <div class="gradcell__sub">Head of GTM · Ramp</div>
+            </div>
+          </div>
+        </td>
+        <td>Account-based outbound</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">1d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <!-- ─── IN PROGRESS (recent activity, not flagged yet) ─── -->
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--s">RH</div>
+            <div>
+              <div class="gradcell__main">Rachel Hayes</div>
+              <div class="gradcell__sub">Marketing Ops · Datadog</div>
+            </div>
+          </div>
+        </td>
+        <td>Lifecycle scoring</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>2 of 3</span></td>
+        <td><span class="age">4h ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--d">JK</div>
+            <div>
+              <div class="gradcell__main">Jordan Kim</div>
+              <div class="gradcell__sub">SDR Manager · Gong</div>
+            </div>
+          </div>
+        </td>
+        <td>Inbound enrichment</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>1 of 3</span></td>
+        <td><span class="age">11h ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--u">TW</div>
+            <div>
+              <div class="gradcell__main">Theo Wagner</div>
+              <div class="gradcell__sub">RevOps · Retool</div>
+            </div>
+          </div>
+        </td>
+        <td>Champion-tracking</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>2 of 3</span></td>
+        <td><span class="age">1d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--t">PB</div>
+            <div>
+              <div class="gradcell__main">Priya Banerjee</div>
+              <div class="gradcell__sub">Head of Ops · Mercury</div>
+            </div>
+          </div>
+        </td>
+        <td>Account scoring</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>1 of 3</span></td>
+        <td><span class="age">1d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <!-- ─── FLAGGED · NEEDS FOLLOW-UP ─── -->
+      <tr class="is-flagged">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--b">EM</div>
+            <div>
+              <div class="gradcell__main">Ella Mendoza</div>
+              <div class="gradcell__sub">Sales Ops · Anthropic</div>
+            </div>
+          </div>
+        </td>
+        <td>Lookalike sourcing</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td><span class="status status--flag"><i class="ph-bold ph-warning-circle"></i>Needs follow-up</span></td>
+        <td><span class="age age--late">3d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-flagged">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--s">CN</div>
+            <div>
+              <div class="gradcell__main">Carlos Núñez</div>
+              <div class="gradcell__sub">RevOps Manager · Brex</div>
+            </div>
+          </div>
+        </td>
+        <td>Win-back enrichment</td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td><span class="status status--flag"><i class="ph-bold ph-warning-circle"></i>Needs follow-up</span></td>
+        <td><span class="age age--late">5d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-flagged">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--d">NV</div>
+            <div>
+              <div class="gradcell__main">Nadia Volkov</div>
+              <div class="gradcell__sub">VP RevOps · Plaid</div>
+            </div>
+          </div>
+        </td>
+        <td>Multi-product attach</td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td><span class="status status--flag"><i class="ph-bold ph-warning-circle"></i>Needs follow-up</span></td>
+        <td><span class="age age--late">6d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-flagged">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--l">FM</div>
+            <div>
+              <div class="gradcell__main">Felix Marsh</div>
+              <div class="gradcell__sub">Head of GTM · Posthog</div>
+            </div>
+          </div>
+        </td>
+        <td>OSS-to-paid scoring</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td><span class="status status--flag"><i class="ph-bold ph-warning-circle"></i>Needs follow-up</span></td>
+        <td><span class="age age--late">4d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-flagged">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--u">HG</div>
+            <div>
+              <div class="gradcell__main">Hannah Garrett</div>
+              <div class="gradcell__sub">Marketing Ops · Webflow</div>
+            </div>
+          </div>
+        </td>
+        <td>ICP refresh</td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td style="text-align:center;"><span class="check is-late"><i class="ph-bold ph-warning"></i></span></td>
+        <td><span class="status status--flag"><i class="ph-bold ph-warning-circle"></i>Needs follow-up</span></td>
+        <td><span class="age age--late">7d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <!-- ─── REMAINING (collapsed feel — fewer details, complete) ─── -->
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--s">YL</div>
+            <div>
+              <div class="gradcell__main">Yara Lopez</div>
+              <div class="gradcell__sub">RevOps · Loom</div>
+            </div>
+          </div>
+        </td>
+        <td>Champion-tracking</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">1d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--b">IS</div>
+            <div>
+              <div class="gradcell__main">Isaac Stern</div>
+              <div class="gradcell__sub">VP Sales · Pulley</div>
+            </div>
+          </div>
+        </td>
+        <td>Funding-signal outbound</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">2d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--t">KR</div>
+            <div>
+              <div class="gradcell__main">Kira Ross</div>
+              <div class="gradcell__sub">Head of GTM Ops · Pinecone</div>
+            </div>
+          </div>
+        </td>
+        <td>ABM signal stack</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">2d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--l">VR</div>
+            <div>
+              <div class="gradcell__main">Vikram Rao</div>
+              <div class="gradcell__sub">RevOps · Modal</div>
+            </div>
+          </div>
+        </td>
+        <td>Usage-to-CRM sync</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">2d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--d">AT</div>
+            <div>
+              <div class="gradcell__main">Amara Thomas</div>
+              <div class="gradcell__sub">Head of CS Ops · Statsig</div>
+            </div>
+          </div>
+        </td>
+        <td>Renewal-risk scoring</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">3d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <!-- ─── REMAINING IN PROGRESS ─── -->
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--u">LB</div>
+            <div>
+              <div class="gradcell__main">Liam Beck</div>
+              <div class="gradcell__sub">SDR Lead · Cohere</div>
+            </div>
+          </div>
+        </td>
+        <td>Persona-by-tech outbound</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>1 of 3</span></td>
+        <td><span class="age">15h ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--s">OE</div>
+            <div>
+              <div class="gradcell__main">Olivia Erikson</div>
+              <div class="gradcell__sub">Marketing Ops · Linear</div>
+            </div>
+          </div>
+        </td>
+        <td>Event-driven enrichment</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>2 of 3</span></td>
+        <td><span class="age">22h ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--b">MR</div>
+            <div>
+              <div class="gradcell__main">Marcus Rivera</div>
+              <div class="gradcell__sub">Head of GTM · Sourcegraph</div>
+            </div>
+          </div>
+        </td>
+        <td>Open-source-to-paid</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>1 of 3</span></td>
+        <td><span class="age">1d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--t">SA</div>
+            <div>
+              <div class="gradcell__main">Sara Abadi</div>
+              <div class="gradcell__sub">RevOps · Fly.io</div>
+            </div>
+          </div>
+        </td>
+        <td>Self-serve qualification</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-pending"><i class="ph ph-clock"></i></span></td>
+        <td><span class="status status--progress"><span class="dot"></span>2 of 3</span></td>
+        <td><span class="age">1d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+      <tr class="is-complete">
+        <td>
+          <div class="gradcell">
+            <div class="avatar avatar--l">DG</div>
+            <div>
+              <div class="gradcell__main">Daniela Gómez</div>
+              <div class="gradcell__sub">VP RevOps · Replicate</div>
+            </div>
+          </div>
+        </td>
+        <td>Inference-tier scoring</td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td style="text-align:center;"><span class="check is-done"><i class="ph-bold ph-check"></i></span></td>
+        <td><span class="status status--complete"><span class="dot"></span>Complete</span></td>
+        <td><span class="age">3d ago</span></td>
+        <td><span class="row-action"><i class="ph ph-arrow-up-right"></i></span></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <p class="footnote">
+    <span>Source: Cohort sheet · column <code>Follow-Up Needed</code> · refreshed every 5 min</span>
+    <span>Mock data — wire to live sheet via <code>loadFromCsv()</code> in <code>data.js</code></span>
+  </p>
+</section>
+
+</body>
+</html>
