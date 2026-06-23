@@ -37,8 +37,12 @@
       try {
         localStorage.setItem(KEY, '1');
         if (code) localStorage.setItem('clay_ws_code', String(code).toUpperCase());
+        // admin flag tracks the CURRENT login: set only for the admin code,
+        // and cleared for any other code so the admin pill never lingers.
         if (code && String(code).toUpperCase() === ADMIN_CODE) {
           localStorage.setItem(ADMIN_KEY, '1');
+        } else {
+          localStorage.removeItem(ADMIN_KEY);
         }
       } catch (e) {}
     },
