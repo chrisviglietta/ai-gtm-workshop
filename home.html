@@ -204,14 +204,14 @@
   <div class="ac-modal" role="document">
     <button class="ac-close" type="button" id="ac-close" aria-label="Close" style="position: absolute; top: 16px; right: 16px; background: var(--oat-200); color: var(--oat-500); width: 36px; height: 36px;"><i class="ph ph-x"></i></button>
     <div class="eyebrow">Welcome back, operator</div>
-    <h2 id="ac-title" style="margin-top: 8px;">Enter your access code.</h2>
-    <p>Six characters, sent in your confirmation email. Drops you straight into your personalized page.</p>
+    <h2 id="ac-title" style="margin-top: 8px;">Enter your email or access code.</h2>
+    <p>Use the work email you registered with, or the access code from your confirmation email. Drops you straight into your personalized page.</p>
     <form class="ac-input" id="ac-form" autocomplete="off" novalidate>
-      <input id="ac-code" name="code" placeholder="MAYA-NYC" maxlength="16" autocapitalize="characters" />
-      <button class="btn btn--tangerine" type="submit"><span>Enter</span><i class="ph-bold ph-arrow-right"></i></button>
+      <input id="ac-code" name="code" placeholder="you@company.com or MAYA-NYC" maxlength="80" autocapitalize="off" autocorrect="off" spellcheck="false" inputmode="email" />
+      <button class="btn btn--tangerine" type="submit"><span class="ac-btn-label">Enter</span><i class="ph-bold ph-arrow-right"></i></button>
     </form>
     <div class="ac-error" id="ac-error" aria-live="polite"></div>
-    <div class="ac-hint">Try <code>MAYA-NYC</code> for the demo · Lost your code? Reply to your workshop confirmation email.</div>
+    <div class="ac-hint">Log in with your registered work email · or try <code>MAYA-NYC</code> for the demo.</div>
   </div>
 </div>
 
@@ -280,11 +280,42 @@
 
 <script>
 (function(){
+  // ── Supabase (email allowlist check via RPC; anon key is safe to embed) ──
+  var SUPABASE_URL  = 'https://misoqdrrryiqckdwgcyk.supabase.co';
+  var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1pc29xZHJycnlpcWNrZHdnY3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxODcwODcsImV4cCI6MjA5Mzc2MzA4N30.E1_GGbWTAdVCTvt7m5jNCep2Zp4Q8axUcpVUhVKVLfc';
+
+  // Returns true if the email is in the graduates table (server decides; list stays private).
+  async function emailIsRegistered(email){
+    var resp = await fetch(SUPABASE_URL + '/rest/v1/rpc/email_is_registered', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': 'Bearer ' + SUPABASE_ANON,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ p_email: email })
+    });
+    if(!resp.ok) throw new Error('rpc ' + resp.status);
+    var data = await resp.json();
+    return data === true;
+  }
+
   var overlay = document.getElementById('ac-overlay');
   var input = document.getElementById('ac-code');
   var err = document.getElementById('ac-error');
+  var form = document.getElementById('ac-form');
+  var btn = form.querySelector('button[type=submit]');
+  var btnLabel = form.querySelector('.ac-btn-label');
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var CODE_RE  = /^[A-Z0-9]{2,}-[A-Z0-9]{2,}$/;
+
   function open(){ overlay.classList.add('is-open'); setTimeout(function(){ input.focus(); }, 50); }
   function close(){ overlay.classList.remove('is-open'); err.textContent = ''; input.classList.remove('is-error'); input.value = ''; }
+  function fail(msg){ input.classList.add('is-error'); err.textContent = msg; }
+  function setBusy(b){ btn.disabled = b; if(btnLabel) btnLabel.textContent = b ? 'Checking…' : 'Enter'; }
+  function enter(code){ if(window.ClayAuth) window.ClayAuth.unlock(code); window.location.href = 'welcome.html'; }
+
   document.getElementById('open-ac').addEventListener('click', open);
   document.getElementById('open-ac-top').addEventListener('click', open);
   // let locked nav tabs open this same modal
@@ -292,22 +323,35 @@
   document.getElementById('ac-close').addEventListener('click', close);
   overlay.addEventListener('click', function(e){ if(e.target === overlay) close(); });
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
-  document.getElementById('ac-form').addEventListener('submit', function(e){
+
+  form.addEventListener('submit', async function(e){
     e.preventDefault();
-    var v = (input.value || '').trim().toUpperCase();
-    if(!v){ err.textContent = 'Enter the code from your confirmation email.'; input.classList.add('is-error'); return; }
-    // demo: accept any code that looks like NAME-CITY (with letters and a dash)
-    if(/^[A-Z0-9]{2,}-[A-Z0-9]{2,}$/.test(v)){
-      err.textContent = '';
-      input.classList.remove('is-error');
-      // unlock the gated tabs/pages, then hand off to the For You page
-      if(window.ClayAuth) window.ClayAuth.unlock(v);
-      window.location.href = 'welcome.html';
+    var raw = (input.value || '').trim();
+    if(!raw){ fail('Enter your work email or access code.'); return; }
+
+    // Email path → validate against the connected graduates list in Supabase
+    if(raw.indexOf('@') !== -1){
+      if(!EMAIL_RE.test(raw)){ fail("That doesn't look like a valid email."); return; }
+      setBusy(true);
+      try {
+        var registered = await emailIsRegistered(raw);
+        setBusy(false);
+        if(registered){ err.textContent = ''; input.classList.remove('is-error'); enter(); }
+        else { fail("We couldn't find that email on the workshop list. Use the email you registered with, or your access code."); }
+      } catch(ex){
+        setBusy(false);
+        fail("Couldn't reach the server — check your connection and try again.");
+      }
       return;
     }
-    input.classList.add('is-error');
-    err.textContent = "That code doesn't look right. Try the format MAYA-NYC.";
+
+    // Code path (incl. CLAY-ADMIN) — accepts NAME-CITY style codes
+    var code = raw.toUpperCase();
+    if(CODE_RE.test(code)){ err.textContent = ''; input.classList.remove('is-error'); enter(code); return; }
+
+    fail("That doesn't look right. Enter your work email, or a code like MAYA-NYC.");
   });
+
   input.addEventListener('input', function(){
     err.textContent = '';
     input.classList.remove('is-error');
