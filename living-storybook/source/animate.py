@@ -10,7 +10,7 @@ OUT = sys.argv[1] if len(sys.argv) > 1 else 'out'
 os.makedirs(OUT, exist_ok=True)
 
 def load(k):
-    p = cv2.imread(f'p{k:02d}.png'); p = p[:, :p.shape[1]//2*2]
+    p = cv2.imread(f'p{k:02d}.png'); p = p[:p.shape[0]//2*2, :p.shape[1]//2*2]
     return cv2.resize(p, None, fx=S, fy=S, interpolation=cv2.INTER_LANCZOS4)
 
 class Scene:
@@ -106,16 +106,19 @@ class Scene:
         self.warps.append(f)
 
     # ---------- overlays applied after warp ----------
-    def stars(self, bbox, amp=0.7, smin=120, glow=3.5, seed=1, pulse=0.18, sway=3.0, exclude=()):
+    def stars(self, bbox, amp=0.7, smin=None, glow=3.5, seed=1, pulse=0.18, sway=3.0, exclude=(), only=None):
         h, s, v = cv2.split(self.hsv)
+        if smin is None:  # adapt to the sheet: stars sit ~50 saturation above the paper
+            smin = min(120, int(np.median(s)) + 50)
         m = ((h >= 12) & (h <= 32) & (s >= smin) & (v >= 170)).astype(np.uint8) * self.box(*bbox).astype(np.uint8)
         n, lab, st, _ = cv2.connectedComponentsWithStats(m)
         rng = np.random.default_rng(seed)
         layers = []
         for i in range(1, n):
-            if st[i, 4] < 4*S*S: continue
+            if st[i, 4] < 4*S*S or max(st[i, 2], st[i, 3]) > 40*S: continue
             ccx, ccy = (st[i, 0] + st[i, 2]/2)/S, (st[i, 1] + st[i, 3]/2)/S
             if any(x0 <= ccx <= x1 and y0 <= ccy <= y1 for x0, y0, x1, y1 in exclude): continue
+            if only is not None and not any(abs(ccx-ox) < 9 and abs(ccy-oy) < 9 for ox, oy in only): continue
             one = (lab == i).astype(np.float32)
             core = self.soft(cv2.dilate(one, np.ones((S, S), np.uint8)), 0.7)
             halo = self.soft(one, glow)
@@ -148,6 +151,7 @@ class Scene:
                 img = img * (1 + core[..., None]*0.08*a)
             return img
         self.overlays.append(f)
+        self.n_stars = getattr(self, 'n_stars', 0) + len(layers)
         return len(layers)
 
     def sprites(self, kind, paths, size=(5, 3)):
@@ -228,6 +232,71 @@ class Scene:
             a = np.clip(lay*0.85*fade, 0, 1)[..., None]
             return img*(1-a) + warm*a
         self.overlays.append(f)
+
+    # ---------- effects added for book 2 ----------
+    def galaxy(self, cx, cy, a, q, tilt, amp=6.0):
+        """Spiral swirls in its own (tilted, flattened) plane; inner arms turn more than outer."""
+        al = np.deg2rad(tilt); ca, sa = np.cos(al), np.sin(al)
+        px, py = self.X - cx*S, self.Y - cy*S
+        u = ca*px + sa*py; v = (-sa*px + ca*py)/q
+        r = np.hypot(u, v)/(a*S)
+        m = np.exp(-(r/1.05)**6).astype(np.float32)
+        prof = np.clip(1.25 - 0.8*r, 0.2, 1.25)
+        def f(t):
+            th = np.deg2rad(amp*np.sin(TAU*t/T))*prof
+            c, s = np.cos(th), np.sin(th)
+            u2 = c*u + s*v; v2 = (-s*u + c*v)*q
+            x2 = ca*u2 - sa*v2; y2 = sa*u2 + ca*v2
+            return m*(x2 - px), m*(y2 - py)
+        self.warps.append(f)
+
+    def flicker(self, mask, axis, amp=2.0, k=14):
+        ax = np.array(axis, np.float32); ax /= np.linalg.norm(ax); pv = np.array([-ax[1], ax[0]])
+        proj = (self.X*ax[0] + self.Y*ax[1])/S
+        def f(t):
+            w1 = np.sin(TAU*k*t/T - proj/5.0); w2 = np.sin(TAU*(k+5)*t/T - proj/3.0 + 1.0)
+            a = amp*S*(0.6*w1 + 0.4*w2); b = amp*S*0.5*np.sin(TAU*(k-3)*t/T + proj/7.0)
+            return mask*(a*ax[0] + b*pv[0]), mask*(a*ax[1] + b*pv[1])
+        self.warps.append(f)
+
+    def billow(self, bbox, amp=2.0, k=1, rise=1.0, sigma=5):
+        """Smoke / mist: slow rolling waves, stronger toward the top of the plume."""
+        x0, y0, x1, y1 = bbox
+        m = self.soft(self.box(*bbox), sigma)
+        h = np.clip((y1*S - self.Y)/((y1-y0)*S), 0, 1)**rise
+        def f(t):
+            ph = TAU*k*t/T
+            dx = amp*S*np.sin(ph - self.Y/(9*S) + self.X/(23*S))
+            dy = amp*S*0.6*np.sin(ph*2 - self.X/(11*S) + 0.7)
+            return m*h*dx, m*h*dy
+        self.warps.append(f)
+
+    def glow(self, mask, color=(140, 220, 255), amp=0.35, k=2, phase=0.0):
+        col = np.array(color, np.float32); m = mask[..., None]
+        def f(img, t):
+            a = amp*(0.5 - 0.5*np.cos(TAU*k*t/T + phase))
+            return img + (col - img*0.55)*m*a
+        self.overlays.append(f)
+
+    def comet_sweep(self, head, tail, k=1, width=4, amp=0.7):
+        """A bright pulse runs down a painted comet's tail."""
+        hx, hy, tx, ty = head[0]*S, head[1]*S, tail[0]*S, tail[1]*S
+        vx, vy = hx - tx, hy - ty; L2 = vx*vx + vy*vy
+        u = np.clip(((self.X-tx)*vx + (self.Y-ty)*vy)/L2, 0, 1)
+        d = np.hypot(self.X - (tx + u*vx), self.Y - (ty + u*vy))
+        near = np.exp(-(d/(width*S))**2).astype(np.float32)
+        col = np.array([170, 235, 255], np.float32)
+        def f(img, t):
+            c = (t/T*k) % 1.0
+            band = np.exp(-((u - c)/0.09)**2) + np.exp(-((u - c + 1)/0.09)**2) + np.exp(-((u - c - 1)/0.09)**2)
+            a = (near*band*amp*(0.4 + 0.6*u))[..., None]
+            return img*(1 - a) + col*a
+        self.overlays.append(f)
+
+    def shimmer(self, mask, amp=0.6, k=6):
+        def f(t):
+            return mask*amp*S*np.sin(TAU*k*t/T + self.Y/(1.5*S)), 0*mask
+        self.warps.append(f)
 
     def render(self, name):
         path = f'{OUT}/{name}.mp4'

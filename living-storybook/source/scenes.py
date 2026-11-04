@@ -139,7 +139,7 @@ class Walker(Scene):
         lift = 70 - max(rot(self.vb, -delta)[1], rot(self.vf, delta)[1])
         lift += -0.6*np.sin(2*ph)**2
         out = self.plate.copy()
-        base_x = self.x_from + self.D*t/T
+        base_x = ((self.D*t/T - self.x_from) % self.D) + self.x_from   # t=0: Chris where he was painted
         for xo in (base_x, base_x - self.D):
             for part, a in zip(self.parts, angs):
                 M = cv2.getRotationMatrix2D((float(self.hip[0]*S), float(self.hip[1]*S)), -a, 1.0)
