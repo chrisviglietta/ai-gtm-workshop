@@ -106,7 +106,7 @@ class Scene:
         self.warps.append(f)
 
     # ---------- overlays applied after warp ----------
-    def stars(self, bbox, amp=0.35, smin=120, glow=3.0, seed=1):
+    def stars(self, bbox, amp=0.7, smin=120, glow=3.5, seed=1, pulse=0.18):
         h, s, v = cv2.split(self.hsv)
         m = ((h >= 12) & (h <= 32) & (s >= smin) & (v >= 170)).astype(np.uint8) * self.box(*bbox).astype(np.uint8)
         n, lab, st, _ = cv2.connectedComponentsWithStats(m)
@@ -117,7 +117,17 @@ class Scene:
             one = (lab == i).astype(np.float32)
             core = self.soft(cv2.dilate(one, np.ones((S, S), np.uint8)), 0.7)
             halo = self.soft(one, glow)
-            layers.append((core, halo, rng.uniform(0, TAU), rng.choice([1, 2, 3])))
+            ph, kk = rng.uniform(0, TAU), int(rng.choice([2, 3, 4]))
+            layers.append((core, halo, ph, kk))
+            cx, cy = st[i, 0] + st[i, 2]/2, st[i, 1] + st[i, 3]/2
+            rr = max(st[i, 2], st[i, 3])
+            zm = np.exp(-(((self.X-cx)**2 + (self.Y-cy)**2) / (rr*0.9)**2)**2).astype(np.float32)
+            def zw(t, cx=cx, cy=cy, zm=zm, ph=ph, kk=kk):
+                a = (0.5 + 0.5*np.sin(TAU*kk*t/T + ph))**1.6
+                s = pulse*(a - 0.3)
+                f = 1/(1+s) - 1
+                return zm*(self.X-cx)*f, zm*(self.Y-cy)*f
+            self.warps.append(zw)
         warm = np.array([150, 225, 255], np.float32)  # BGR soft gold
         def f(img, t):
             img = img.astype(np.float32)
@@ -166,6 +176,50 @@ class Scene:
             return img
         self.overlays.append(f)
 
+    def field(self, t):
+        dx = np.zeros_like(self.X); dy = np.zeros_like(self.Y)
+        for w in self.warps:
+            a, b = w(t); dx += a; dy += b
+        return dx, dy
+
+    def frame(self, t):
+        dx, dy = self.field(t)
+        fr = cv2.remap(self.img, self.X+dx, self.Y+dy, cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT).astype(np.float32)
+        for o in self.overlays:
+            fr = o(fr, t)
+        return fr
+
+    def planet(self, cx, cy, r, band, amp=2.5, k=1, phase=0.0):
+        """Planet rocks on its axis; objects standing on its top (band px) stay put."""
+        disc = ((self.X - cx*S)**2 + (self.Y - cy*S)**2 < ((r+2)*S)**2).astype(np.float32)
+        disc = cv2.GaussianBlur(disc, (0, 0), 1.0*S)
+        top = (cy - r + band)*S
+        m = disc * np.clip((self.Y - top) / (14*S), 0, 1)
+        self.rotate((cx, cy), m, lambda t: amp*np.sin(TAU*k*t/T + phase))
+
+    def shooting_star(self, p0, p1, t0, dur=1.1, tail=0.35, width=1.4):
+        warm = np.array([175, 235, 255], np.float32)
+        p0, p1 = np.array(p0, np.float32)*S, np.array(p1, np.float32)*S
+        def f(img, t):
+            u = (t - t0) / dur
+            if u <= 0 or u >= 1 + tail: return img
+            lay = np.zeros(img.shape[:2], np.float32)
+            n = 14
+            for j in range(n):
+                a0 = u - tail*j/n; a1 = u - tail*(j+1)/n
+                if a0 < 0: break
+                q0 = p0 + (p1-p0)*min(a0, 1); q1 = p0 + (p1-p0)*max(min(a1, 1), 0)
+                cv2.line(lay, tuple(int(v) for v in q0), tuple(int(v) for v in q1), float((1-j/n)**1.5),
+                         max(1, int(width*S*(1-j/n*0.6))), cv2.LINE_AA)
+            if u < 1:
+                h = p0 + (p1-p0)*u
+                cv2.circle(lay, (int(h[0]), int(h[1])), int(1.6*S), 1.0, -1, cv2.LINE_AA)
+            lay = cv2.GaussianBlur(lay, (0, 0), 0.8*S) + cv2.GaussianBlur(lay, (0, 0), 3*S)*0.6
+            fade = min(1.0, u/0.15, (1+tail-u)/0.3)
+            a = np.clip(lay*0.85*fade, 0, 1)[..., None]
+            return img*(1-a) + warm*a
+        self.overlays.append(f)
+
     def render(self, name):
         path = f'{OUT}/{name}.mp4'
         cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'bgr24',
@@ -175,13 +229,7 @@ class Scene:
         pr = subprocess.Popen(cmd, stdin=subprocess.PIPE)
         for i in range(N):
             t = i / FPS
-            dx = np.zeros_like(self.X); dy = np.zeros_like(self.Y)
-            for w in self.warps:
-                a, b = w(t); dx += a; dy += b
-            fr = cv2.remap(self.img, self.X+dx, self.Y+dy, cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT).astype(np.float32)
-            for o in self.overlays:
-                fr = o(fr, t)
-            fr = np.clip(fr, 0, 255).astype(np.uint8)
+            fr = np.clip(self.frame(t), 0, 255).astype(np.uint8)
             if i in (0, N//4, N//2): cv2.imwrite(f'{OUT}/{name}_f{i:03d}.jpg', fr)
             pr.stdin.write(fr.tobytes())
         pr.stdin.close(); pr.wait()
