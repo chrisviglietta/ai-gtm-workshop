@@ -28,7 +28,7 @@ def s2():
     sc = Scene(2)
     sc.scarf((10, 140, 170, 245), (165, 160), amp=3.2, wl=65)
     sc.hair((125, 100, 190, 180), (158, 106), amp=0.8)
-    sc.stars((0, 0, 296, 140), amp=0.8)
+    sc.stars((0, 0, 296, 140), amp=0.8, exclude=[(115, 85, 205, 200)])
     sc.shooting_star((270, 30), (175, 85), t0=4.4)
     sc.planet(152, 485, 115, 12, amp=2.5)
     head = sc.ellipse(155, 128, 24, 30)

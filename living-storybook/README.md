@@ -7,7 +7,7 @@ Every frame is built from the original painting. Nothing is repainted. Wind ripp
 Regenerate: `cd source && python3 scenes.py ../clips` (needs numpy, opencv-python-headless and ffmpeg).
 
 ## Version 2: more movement
-- Stars twinkle and pulse in size. A shooting star crosses the sky in scenes 1, 2, 7 and 9.
+- Stars twinkle, pulse in size and sway gently left and right. A shooting star crosses the sky in scenes 1, 2, 7 and 9.
 - Planets rock gently on their axis in scenes 1, 2, 7, 8 and 10.
 - Clouds drift noticeably in scenes 4 and 10, and the sun sinks a little further.
 - Scene 6: Chris is cut out of the painting, so he walks across the dunes with a stepping stride and leaves the frame. The area where he was standing is filled in. He loops back in from the left.

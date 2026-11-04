@@ -106,7 +106,7 @@ class Scene:
         self.warps.append(f)
 
     # ---------- overlays applied after warp ----------
-    def stars(self, bbox, amp=0.7, smin=120, glow=3.5, seed=1, pulse=0.18):
+    def stars(self, bbox, amp=0.7, smin=120, glow=3.5, seed=1, pulse=0.18, sway=3.0, exclude=()):
         h, s, v = cv2.split(self.hsv)
         m = ((h >= 12) & (h <= 32) & (s >= smin) & (v >= 170)).astype(np.uint8) * self.box(*bbox).astype(np.uint8)
         n, lab, st, _ = cv2.connectedComponentsWithStats(m)
@@ -114,24 +114,33 @@ class Scene:
         layers = []
         for i in range(1, n):
             if st[i, 4] < 4*S*S: continue
+            ccx, ccy = (st[i, 0] + st[i, 2]/2)/S, (st[i, 1] + st[i, 3]/2)/S
+            if any(x0 <= ccx <= x1 and y0 <= ccy <= y1 for x0, y0, x1, y1 in exclude): continue
             one = (lab == i).astype(np.float32)
             core = self.soft(cv2.dilate(one, np.ones((S, S), np.uint8)), 0.7)
             halo = self.soft(one, glow)
             ph, kk = rng.uniform(0, TAU), int(rng.choice([2, 3, 4]))
-            layers.append((core, halo, ph, kk))
+            ph2 = rng.uniform(0, TAU)
+            sx = (lambda ph2: lambda t: sway*S*np.sin(TAU*t/T + ph2))(ph2)
+            layers.append((core, halo, ph, kk, sx))
             cx, cy = st[i, 0] + st[i, 2]/2, st[i, 1] + st[i, 3]/2
             rr = max(st[i, 2], st[i, 3])
             zm = np.exp(-(((self.X-cx)**2 + (self.Y-cy)**2) / (rr*0.9)**2)**2).astype(np.float32)
-            def zw(t, cx=cx, cy=cy, zm=zm, ph=ph, kk=kk):
+            R = rr*0.9 + 1.6*sway*S
+            zt = np.exp(-(((self.X-cx)**2 + (self.Y-cy)**2) / R**2)**3).astype(np.float32)
+            def zw(t, cx=cx, cy=cy, zm=zm, zt=zt, ph=ph, kk=kk, sx=sx):
                 a = (0.5 + 0.5*np.sin(TAU*kk*t/T + ph))**1.6
                 s = pulse*(a - 0.3)
                 f = 1/(1+s) - 1
-                return zm*(self.X-cx)*f, zm*(self.Y-cy)*f
+                o = sx(t)
+                return zm*(self.X-cx-o)*f - zt*o, zm*(self.Y-cy)*f
             self.warps.append(zw)
         warm = np.array([150, 225, 255], np.float32)  # BGR soft gold
         def f(img, t):
             img = img.astype(np.float32)
-            for core, halo, ph, kk in layers:
+            for core, halo, ph, kk, sx in layers:
+                o = int(round(sx(t)))
+                core, halo = np.roll(core, o, axis=1), np.roll(halo, o, axis=1)
                 a = 0.5 + 0.5*np.sin(TAU*kk*t/T + ph)
                 a = a**1.6
                 g = (core*0.35 + halo*0.55) * amp * a
