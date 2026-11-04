@@ -1,0 +1,46 @@
+<title>Chris's Living Storybook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap">
+<style>
+/* Layout: a storybook spread — ten pages in a flowing grid, each a framed plate with a folio caption */
+:root{
+  --paper:#f3e8d3; --plate:#fbf4e6; --ink:#5a4330; --sepia:#8a6a4c; --rule:#d9c6a6; --scarf:#c4602e;
+  --display:"IM Fell English SC",Georgia,serif; --body:"IM Fell English",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#1c1914; --plate:#26211a; --ink:#ead9bd; --sepia:#b89b78; --rule:#3d342a; --scarf:#e07a45; color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#1c1914; --plate:#26211a; --ink:#ead9bd; --sepia:#b89b78; --rule:#3d342a; --scarf:#e07a45; color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 56px}
+header{max-width:1200px;margin:0 auto 32px;text-align:center;display:grid;gap:8px}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,5vw,44px);letter-spacing:.04em;margin:0;text-wrap:balance}
+h1 span{color:var(--scarf)}
+header p{margin:0;font-style:italic;color:var(--sepia);font-size:17px}
+main{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:28px 22px}
+figure{margin:0;display:grid;gap:10px}
+.plate{background:var(--plate);padding:6px;border:1px solid var(--rule);box-shadow:0 1px 0 var(--rule)}
+video{display:block;width:100%;max-width:100%;aspect-ratio:888/1500;object-fit:cover;background:var(--plate)}
+figcaption{display:flex;gap:8px;align-items:baseline;font-size:16px;line-height:1.3;min-width:0}
+.folio{font-family:var(--display);color:var(--scarf);font-size:14px;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+footer{max-width:1200px;margin:40px auto 0;text-align:center;color:var(--sepia);font-style:italic;font-size:15px}
+</style>
+
+<header>
+  <h1>The Living <span>Storybook</span> of Chris</h1>
+  <p>Ten watercolor plates, quietly alive. Each loops every seven seconds.</p>
+</header>
+
+<main>
+  <figure><div class="plate"><video src="clips/01-little-planet.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">I</span>On his little planet</figcaption></figure>
+  <figure><div class="plate"><video src="clips/02-among-the-stars.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">II</span>Among the stars</figcaption></figure>
+  <figure><div class="plate"><video src="clips/03-rose-garden.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">III</span>In the rose garden</figcaption></figure>
+  <figure><div class="plate"><video src="clips/04-sunset.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">IV</span>Watching the sunset</figcaption></figure>
+  <figure><div class="plate"><video src="clips/05-the-fox.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">V</span>Chris and the fox</figcaption></figure>
+  <figure><div class="plate"><video src="clips/06-desert-walk.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">VI</span>Through the desert</figcaption></figure>
+  <figure><div class="plate"><video src="clips/07-reaching-for-a-star.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">VII</span>Reaching for a star</figcaption></figure>
+  <figure><div class="plate"><video src="clips/08-beneath-the-tree.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">VIII</span>Beneath a tiny tree</figcaption></figure>
+  <figure><div class="plate"><video src="clips/09-between-planets.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">IX</span>Between planets</figcaption></figure>
+  <figure><div class="plate"><video src="clips/10-horizon.mp4" autoplay loop muted playsinline></video></div><figcaption><span class="folio">X</span>Toward the horizon</figcaption></figure>
+</main>
+
+<footer>Fin.</footer>
