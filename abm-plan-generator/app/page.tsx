@@ -174,7 +174,7 @@ const edgePath = (a: GNode, b: GNode) => {
 
 function ClayLogo({ className = "h-6" }: { className?: string }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src="/clay-logo.png" alt="Clay" className={`${className} w-auto`} />;
+  return <img src="clay-logo.png" alt="Clay" className={`${className} w-auto`} />;
 }
 
 function Pill({ status }: { status: Status }) {
@@ -656,7 +656,7 @@ function GateModal({ open, onUnlock }: { open: boolean; onUnlock: (email: string
           >
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FDBE11]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/clay-icon.png" alt="" className="h-8 w-8 object-contain" />
+              <img src="clay-icon.png" alt="" className="h-8 w-8 object-contain" />
             </div>
             <h2 id="gate-title" className="mt-6 text-2xl font-semibold tracking-tight">
               Unlock your ABM Plan
